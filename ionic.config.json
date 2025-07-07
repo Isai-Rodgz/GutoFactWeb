@@ -1,0 +1,7 @@
+{
+  "name": "El-Guto",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
