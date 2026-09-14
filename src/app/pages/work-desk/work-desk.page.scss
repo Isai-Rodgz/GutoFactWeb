@@ -1,0 +1,341 @@
+.work-desk-content {
+  --background: var(--ion-color-primario1);
+}
+
+.work-desk-content::part(scroll) {
+  display: flex;
+  flex-direction: column;
+}
+
+
+/* =========================
+   HEADER
+   ========================= */
+
+.top-header {
+  height: 68px;
+
+  display: flex;
+  align-items: center;
+
+  padding: 0 18px;
+
+  background: var(--ion-color-primario2);
+
+  border-bottom: 1px solid var(--ion-color-secundario3);
+
+  box-sizing: border-box;
+}
+
+.header-button {
+  --color: var(--ion-color-primario-main);
+
+  --padding-start: 8px;
+  --padding-end: 8px;
+
+  font-size: 27px;
+
+  margin: 0;
+}
+
+.header-title {
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+
+  margin-left: 8px;
+
+  color: var(--ion-color-primario-main);
+
+  font-size: 21px;
+  font-weight: 600;
+}
+
+.ticket-number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 28px;
+  height: 28px;
+
+  border: 1px solid var(--ion-color-primario-main);
+
+  color: var(--ion-color-primario-main);
+
+  font-size: 17px;
+  font-weight: 400;
+}
+
+.header-actions {
+  margin-left: auto;
+
+  display: flex;
+  align-items: center;
+}
+
+
+/* =========================
+   RESUMEN
+   ========================= */
+
+.summary {
+  display: flex;
+
+  width: calc(100% - 34px);
+
+  margin: 0 17px 20px;
+
+  min-height: 82px;
+
+  background: var(--ion-color-primario5);
+
+  color: var(--ion-color-secundario-main);
+
+  border-radius: 8px;
+
+  overflow: hidden;
+}
+
+.summary-item {
+  flex: 1;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 5px;
+
+  text-align: center;
+}
+
+.summary-item + .summary-item {
+  border-left: 1px solid var(--ion-color-primario6);
+}
+
+.summary-label {
+  font-size: 15px;
+
+  font-weight: 500;
+}
+
+.summary-value {
+  font-size: 20px;
+
+  font-weight: 600;
+}
+
+/* =========================
+   FILTRO Y BÚSQUEDA
+   ========================= */
+
+.search-container {
+  display: flex;
+  align-items: stretch;
+
+  width: 100%;
+  min-height: 52px;
+
+  background: var(--ion-color-primario1);
+
+  border-top: 1px solid var(--ion-color-primario3);
+  border-bottom: 1px solid var(--ion-color-primario3);
+
+  box-sizing: border-box;
+}
+
+.category-select {
+  flex: 1;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  min-width: 0;
+
+  padding: 0 18px;
+
+  color: var(--ion-color-secundario-main);
+
+  font-size: 16px;
+}
+
+.category-select span {
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+}
+
+.category-select ion-icon {
+  flex-shrink: 0;
+
+  margin-left: 12px;
+
+  color: var(--ion-color-primario-main);
+
+  font-size: 21px;
+}
+
+.search-button {
+  width: 60px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  border-left: 1px solid var(--ion-color-primario3);
+}
+
+.search-button ion-icon {
+  color: var(--ion-color-primario-main);
+
+  font-size: 27px;
+}
+
+
+/* =========================
+   ESTADO DEL TURNO
+   ========================= */
+
+.empty-state {
+  flex: 1;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+
+  padding: 32px 20px 48px;
+
+  box-sizing: border-box;
+}
+
+.cash-register-icon {
+  width: 82px;
+  height: 82px;
+
+  margin-bottom: 20px;
+
+}
+
+.empty-state h2 {
+  margin: 0;
+
+  color: var(--ion-color-secundario-main);
+
+  font-size: 19px;
+  font-weight: 600;
+
+  line-height: 1.3;
+}
+
+.empty-state p {
+  margin: 7px 0 22px;
+
+  color: var(--ion-color-secundario4);
+
+  font-size: 15px;
+
+  line-height: 1.4;
+}
+
+.open-shift-button {
+  --background: var(--ion-color-primario-main);
+  --background-activated: var(--ion-color-primario6);
+
+  --color: var(--ion-color-primario-main-contrast);
+
+  --border-radius: 8px;
+
+  height: 44px;
+
+  min-width: 160px;
+
+  margin: 0;
+
+  font-size: 16px;
+
+  text-transform: none;
+}
+
+
+/* =========================
+   BOTÓN ABRIR TURNO
+   ========================= */
+
+.open-shift-button {
+  --background: var(--ion-color-primario-main);
+  --background-activated: var(--ion-color-primario6);
+
+  --color: var(--ion-color-primario-main-contrast);
+
+  --border-radius: 8px;
+
+  font-size: 17px;
+
+  height: 43px;
+
+  min-width: 160px;
+
+  text-transform: none;
+
+  margin-top: 0;
+}
+
+
+
+/* =========================
+   Bloque de datos de usuario
+   ========================= */
+
+.user-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 16px 18px;
+
+  background: var(--ion-color-primario1);
+}
+
+.user-welcome {
+  min-width: 0;
+}
+
+.user-welcome h2 {
+  margin: 0 0 5px;
+
+  color: var(--ion-color-secundario-main);
+
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.user-welcome p {
+  margin: 2px 0;
+
+  color: var(--ion-color-secundario4);
+
+  font-size: 14px;
+}
+
+.logout-button {
+  --color: var(--ion-color-primario-main);
+
+  flex-shrink: 0;
+
+  font-size: 14px;
+
+  text-transform: none;
+}
+

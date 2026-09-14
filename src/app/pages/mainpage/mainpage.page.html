@@ -1,0 +1,86 @@
+
+
+
+<ion-content [fullscreen]="true" class="login-content" style="color: primario1;">
+
+  <div class="mobile-wrapper" >
+
+  <!-- Cabecera -->
+
+  <ion-header translucent="true" class="header-bar">
+  <ion-toolbar color="none" >
+    <ion-title style="text-align: center;">
+      <img src="assets\icon\ph--chef-hat.svg" style="width: 96px; height: 96px; margin: 0%; padding: 0%;"/> <br>
+      <strong style="color: #E57722; font-size: 30px;">E L G Ü T O</strong>
+      <div class="admin" style="color: #EB984C;">Punto de Venta</div>
+    </ion-title>
+
+      <div class="food-header">
+      <img src="assets\icon\pasta.svg" style="width: 40px; height: 40px;"/>
+      <img src="assets\icon\warm-bold.svg" style="width: 40px; height: 40px;"/>
+      <img src="assets\icon\meat.svg" style="width: 40px; height: 40px;"/>
+      <img src="assets\icon\croissant.svg" style="width: 40px; height: 40px;"/>
+      </div>
+
+  </ion-toolbar>
+  </ion-header>
+  
+
+  <!-- Los Inputs con un form agrupandolos -->
+
+  <form formGroup="form">
+
+
+    <div class="login-button">
+
+      <ion-button fill="solid" class="sing-up" color="primario-main" shape="round"
+      routerLink="/new-user">
+        Registrarse
+      </ion-button>
+
+
+      <ion-button fill="outline" class="log-in" color="primario-main" shape="round"
+      routerLink="/log-in">
+        Iniciar Sesión
+      </ion-button>
+  
+    </div>
+
+  
+
+  <!-- Input de email 
+
+  <app-custom-input 
+  autocomplete="email"
+  icon="mail-outline"
+  [control]="form.controls.email"
+  type="email"
+  label="Correo"
+  
+  ></app-custom-input>   -->
+
+
+  <!-- Input de password 
+
+
+  <app-custom-input 
+  [control]="form.controls.password"
+  icon="lock-closed-outline"
+  type="password"
+  label="Contraseña"
+  
+  ></app-custom-input>   -->
+
+
+  <!-- Muestra los datos de los inputs en pantalla 
+  {{form.value | json}}    -->
+
+  </form>
+
+
+  </div>
+
+
+
+
+</ion-content>

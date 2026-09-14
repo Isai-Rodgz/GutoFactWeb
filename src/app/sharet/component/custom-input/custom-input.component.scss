@@ -1,0 +1,23 @@
+.country-container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 100%;
+
+}
+
+.flag {
+  width: 24px;
+  margin-right: 10px;
+  flex-shrink: 0;
+}
+
+.country-select {
+  flex: 1;
+}
+
+.country-select::part(text) {
+  white-space: normal;
+  overflow: visible;
+  text-overflow: unset;
+}

@@ -1,0 +1,97 @@
+
+
+// Estilos para el login
+.login-content {
+    &::part(scroll) {
+    display: flex;
+    justify-content: center;
+  }
+  
+}
+
+
+.admin{
+    font-size: 18px;
+}
+
+
+
+.header-bar{
+    height: 400px;
+    //width: 100%;
+    border-radius: 0%;
+    box-shadow: none;
+    padding-top: 100px;
+    justify-content: center;
+    text-align: justify;
+    display: flex;
+    background-color: #101010;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    
+    
+}
+
+.food-header{
+    display: flex;
+    padding-top: 80px;
+    gap: 30px;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.mobile-wrapper {
+  width: 100%;
+  max-width: 430px; // ancho tipo iPhone 16 Plus
+  min-height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+}
+
+
+/* SOLO en escritorio */
+@media (min-width: 768px) {
+  .mobile-wrapper {
+    box-shadow: 0 0 25px rgba(0,0,0,0.15);
+    border-radius: 24px;
+    overflow: hidden;
+    margin: 20px 0;
+}
+
+
+}
+
+
+/*Botones del inicio*/
+
+.login-button{
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding-top: 110px;
+}
+
+.sing-up{
+  color: white;
+  border-radius: 16px;
+  width: 270px;
+  font-size: 20px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+
+}
+
+.log-in{
+  color: white;
+  border-radius: 16px;
+  width: 270px;
+  font-size: 20px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+
+}
+
+
+
+// Fin de Estilos para el login

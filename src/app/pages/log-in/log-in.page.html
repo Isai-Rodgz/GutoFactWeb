@@ -1,0 +1,85 @@
+<ion-content [fullscreen]="true" class="login-content" style="color: primario1;">
+
+  <div class="mobile-wrapper">
+
+  <!-- Cabecera -->
+
+  <ion-header translucent="true" class="header-bar">
+  <ion-toolbar color="none" class="bar-inside">
+    <ion-title style="text-align: center;">
+      <ion-button class="goback" fill="clear" routerLink="/mainpage"
+      ><ion-icon name="arrow-back-outline" style="height: 32px; width: 32px; color: #E57722;"></ion-icon></ion-button>
+      <strong style="color: #E57722; font-size: 22px;">Iniciar Sesión</strong>
+    </ion-title>
+
+  </ion-toolbar>
+  </ion-header>
+  
+
+  <!-- Los Inputs con un form agrupandolos -->
+
+  <form [formGroup]="form">
+
+  
+
+  <!-- Input de email -->
+
+  <app-custom-input 
+  autocomplete="email"
+  icon="mail-outline"
+  [control]="form.controls.email"
+  type="email"
+  label="Correo Electronico"
+  
+  ></app-custom-input>   
+
+
+  <!-- Input de password -->
+
+
+  <app-custom-input 
+  [control]="form.controls.password"
+  icon="lock-closed-outline"
+  type="password"
+  label="Contraseña"
+  
+  ></app-custom-input>
+
+
+
+  <!-- Muestra los datos de los inputs en pantalla 
+  {{form.value | json}}    -->
+
+
+
+  <div class="login-button">
+
+      <ion-button fill="solid" class="log-in" color="primario-main" shape="round"
+      routerLink="/" (click)="login()" [disabled]="form.invalid">
+        Iniciar Sesión
+      </ion-button>
+  
+  </div>
+
+
+  <!-- Terminos y condiciones -->
+  <div class="terms-container">
+
+  <span class="terms-text">
+    <strong><a routerLink="/reset-pass">¿Ha olvidado la contraseña?</a></strong>
+  </span>
+
+  </div>
+
+
+
+
+  </form>
+
+
+  </div>
+
+
+
+
+</ion-content>

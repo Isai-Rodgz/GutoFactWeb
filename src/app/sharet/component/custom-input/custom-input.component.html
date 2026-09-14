@@ -1,0 +1,60 @@
+<ion-item class="custom-input" lines="none">
+  <ion-icon color="primario-main" *ngIf="icon" slot="start" [name]="icon"></ion-icon>
+  
+  
+
+  <!-- Lo que define el estado de los inputs -->
+  <ion-input 
+  *ngIf="type !== 'select'"
+  [type]="inputType"
+  [autocomplete]="autocomplete"
+  [label]="label"
+  [formControl]="control"
+  label-placement="floating"
+  ></ion-input>
+
+
+  <!-- Condicionando que el boton de hide or show psw aparezca cuando 
+  identifique un input tipo psw -->
+
+   @if(type === 'password') {
+    <ion-button
+      fill="clear"
+      slot="end"
+      (click)="togglePassword()"
+      color="primario-main">
+
+      <ion-icon
+        [name]="hidePassword ? 'eye-off-outline' : 'eye-outline'">
+      </ion-icon>
+
+    </ion-button>
+  }
+
+
+  <!-- El selector -->
+
+<div class="country-container" *ngIf="type === 'select'">
+
+  <img
+    class="flag"
+    [src]="selectedCountry?.flag">
+
+  <ion-select
+    class="country-select"
+    interface="popover"
+    label="País"
+    label-placement="floating"
+    [formControl]="control">
+
+    <ion-select-option
+      *ngFor="let option of options"
+      [value]="option.code">
+
+      {{ option.name }}
+
+    </ion-select-option>
+
+  </ion-select>
+
+</div>
