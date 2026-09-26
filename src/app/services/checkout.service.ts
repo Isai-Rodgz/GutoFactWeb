@@ -4,6 +4,8 @@ import { TicketService } from './ticket.service';
 import { TicketItemService } from './ticket-item.service';
 import { SaleService } from './sale.service';
 import { TicketInventoryService } from './ticket-inventory.service';
+import { StorageService } from './storage.service';
+
 
 @Injectable({
   providedIn: 'root'
@@ -14,8 +16,8 @@ export class CheckoutService {
     private ticketService: TicketService,
     private ticketItemService: TicketItemService,
     private saleService: SaleService,
-    private ticketInventoryService:
-      TicketInventoryService
+    private ticketInventoryService:TicketInventoryService,
+    private storageService: StorageService
   ) {}
 
 
@@ -24,6 +26,17 @@ export class CheckoutService {
         ticketId: string,
         paymentMethod: Sale['paymentMethod'],
         paymentReference?: string): Sale {
+
+        return this.storageService.runTransaction(
+      [
+        'sales',
+        'cash-movements',
+        'inventory-movements',
+        'products',
+        'inventory-reservations',
+        'tickets'
+      ],
+      () => {
 
         const ticket =
         this.ticketService.getById(ticketId);
@@ -76,5 +89,8 @@ export class CheckoutService {
 
         return sale;
     }
+
+    );
+  }
 
 }

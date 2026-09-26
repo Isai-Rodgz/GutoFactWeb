@@ -48,6 +48,12 @@ export class InventoryService {
       );
     }
 
+    if (!this.isValidMovement(type, direction)) {
+      throw new Error(
+        'El tipo y la dirección del movimiento no son compatibles.'
+      );
+    }
+
     const product =
       this.productService.getById(productId);
 
@@ -66,45 +72,52 @@ export class InventoryService {
       );
     }
 
-    const movements = this.getAll();
-    const now = new Date().toISOString();
+    return this.storage.runTransaction(
+      [
+        'inventory-movements',
+        'products'
+      ],
+      () => {
 
-    const newMovement: InventoryMovement = {
-      id: crypto.randomUUID(),
-      productId,
-      shiftId,
-      userId,
-      type,
-      direction,
-      quantity,
-      description,
-      createdAt: now
-    };
+        const movements = this.getAll();
+        const now = new Date().toISOString();
 
-    movements.push(newMovement);
+        const newMovement: InventoryMovement = {
+          id: crypto.randomUUID(),
+          productId,
+          shiftId,
+          userId,
+          type,
+          direction,
+          quantity,
+          description,
+          createdAt: now
+        };
 
-    this.storage.set(
-      this.STORAGE_KEY,
-      movements
-    );
+        movements.push(newMovement);
 
-    const newStock =
-      direction === 'in'
-        ? product.stock + quantity
-        : product.stock - quantity;
+        this.storage.set(
+          this.STORAGE_KEY,
+          movements
+        );
 
-    this.productService.update(
-      productId,
-      userId,
-      {
-        stock: newStock
+        const stockChange =
+          direction === 'in'
+            ? quantity
+            : -quantity;
+
+        this.productService.adjustStock(
+          productId,
+          stockChange,
+          userId
+        );
+
+        return newMovement;
       }
     );
-
-    return newMovement;
   }
 
-    registerSale(
+  registerSale(
     productId: string,
     userId: string,
     quantity: number,
@@ -121,5 +134,30 @@ export class InventoryService {
       shiftId,
       description
     );
+  }
+
+  private isValidMovement(
+    type: InventoryMovement['type'],
+    direction: InventoryMovement['direction']
+  ): boolean {
+
+    if (type === 'adjustment') {
+      return true;
+    }
+
+    const validDirections: Record<
+      Exclude<
+        InventoryMovement['type'],
+        'adjustment'
+      >,
+      InventoryMovement['direction']
+    > = {
+      purchase: 'in',
+      sale: 'out',
+      damage: 'out',
+      return: 'in'
+    };
+
+    return validDirections[type] === direction;
   }
 }

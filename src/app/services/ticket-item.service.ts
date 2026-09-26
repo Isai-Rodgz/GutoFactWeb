@@ -105,6 +105,15 @@ export class TicketItemService {
         );
         }
 
+
+            return this.storage.runTransaction(
+      [
+        this.STORAGE_KEY,
+        'inventory-reservations'
+      ],
+      () => {
+
+
         const items = this.getAll();
 
         const now = new Date().toISOString();
@@ -141,6 +150,9 @@ export class TicketItemService {
         );
 
         return newItem;
+
+        }
+        );
     }
 
     

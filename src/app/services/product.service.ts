@@ -147,125 +147,164 @@ export class ProductService {
 
 
     //Actualizar los productos
-    update(
-        productId: string,
-        updatedBy: string,
-        changes: {
-        name?: string;
-        description?: string;
-        categoryId?: string;
-        price?: number;
-        cost?: number;
-        stock?: number;
-        isActive?: boolean;
-        }
+  update(
+  productId: string,
+  updatedBy: string,
+  changes: {
+    name?: string;
+    description?: string;
+    categoryId?: string;
+    price?: number;
+    cost?: number;
+    isActive?: boolean;
+  }
+): Product {
 
-        ): Product {
+  const products = this.getAll();
 
-        const products = this.getAll();
+  const index = products.findIndex(
+    product => product.id === productId
+  );
 
-        const index = products.findIndex(
-        product => product.id === productId
-        );
+  if (index === -1) {
+    throw new Error(
+      'El producto no existe.'
+    );
+  }
 
-        if (index === -1) {
-        throw new Error(
-            'El producto no existe.'
-        );
-        }
+  const product = products[index];
 
-        const product = products[index];
+  if (
+    changes.name !== undefined &&
+    !changes.name.trim()
+  ) {
+    throw new Error(
+      'El nombre del producto es obligatorio.'
+    );
+  }
 
-        if (
-        changes.name !== undefined &&
-        !changes.name.trim()
-        ) {
-        throw new Error(
-            'El nombre del producto es obligatorio.'
-        );
-        }
+  if (
+    changes.price !== undefined &&
+    changes.price < 0
+  ) {
+    throw new Error(
+      'El precio no puede ser negativo.'
+    );
+  }
 
-        if (
-        changes.price !== undefined &&
-        changes.price < 0
-        ) {
-        throw new Error(
-            'El precio no puede ser negativo.'
-        );
-        }
+  if (
+    changes.cost !== undefined &&
+    changes.cost < 0
+  ) {
+    throw new Error(
+      'El costo no puede ser negativo.'
+    );
+  }
 
-        if (
-        changes.cost !== undefined &&
-        changes.cost < 0
-        ) {
-        throw new Error(
-            'El costo no puede ser negativo.'
-        );
-        }
+  const now = new Date().toISOString();
 
-        if (
-        changes.stock !== undefined &&
-        changes.stock < 0
-        ) {
-        throw new Error(
-            'El stock no puede ser negativo.'
-        );
-        }
+  const updatedProduct: Product = {
+    ...product,
 
-        const now = new Date().toISOString();
+    name:
+      changes.name !== undefined
+        ? changes.name.trim()
+        : product.name,
 
-        const updatedProduct: Product = {
-        ...product,
+    description:
+      changes.description !== undefined
+        ? changes.description.trim()
+        : product.description,
 
-        name:
-            changes.name !== undefined
-            ? changes.name.trim()
-            : product.name,
+    categoryId:
+      changes.categoryId !== undefined
+        ? changes.categoryId
+        : product.categoryId,
 
-        description:
-            changes.description !== undefined
-            ? changes.description.trim()
-            : product.description,
+    price:
+      changes.price !== undefined
+        ? changes.price
+        : product.price,
 
-        categoryId:
-            changes.categoryId !== undefined
-            ? changes.categoryId
-            : product.categoryId,
+    cost:
+      changes.cost !== undefined
+        ? changes.cost
+        : product.cost,
 
-        price:
-            changes.price !== undefined
-            ? changes.price
-            : product.price,
+    isActive:
+      changes.isActive !== undefined
+        ? changes.isActive
+        : product.isActive,
 
-        cost:
-            changes.cost !== undefined
-            ? changes.cost
-            : product.cost,
+    updatedAt: now,
+    updatedBy
+  };
 
-        stock:
-            changes.stock !== undefined
-            ? changes.stock
-            : product.stock,
+  products[index] = updatedProduct;
 
-        isActive:
-            changes.isActive !== undefined
-            ? changes.isActive
-            : product.isActive,
+  this.storage.set(
+    this.STORAGE_KEY,
+    products
+  );
 
-        updatedAt: now,
-        updatedBy
-        };
+  return updatedProduct;
+}
 
-        products[index] = updatedProduct;
 
-        this.storage.set(
-        this.STORAGE_KEY,
-        products
-        );
+//Ajustar el stock de un producto
+adjustStock(
+  productId: string,
+  quantity: number,
+  updatedBy: string
+): Product {
 
-        return updatedProduct;
-    }
+  if (quantity === 0) {
+    throw new Error(
+      'La cantidad debe ser diferente de cero.'
+    );
+  }
 
+  const products = this.getAll();
+
+  const index = products.findIndex(
+    product => product.id === productId
+  );
+
+  if (index === -1) {
+    throw new Error(
+      'El producto no existe.'
+    );
+  }
+
+  const product = products[index];
+
+  const newStock =
+    product.stock + quantity;
+
+  if (newStock < 0) {
+    throw new Error(
+      'El stock no puede ser negativo.'
+    );
+  }
+
+  const now = new Date().toISOString();
+
+  const updatedProduct: Product = {
+    ...product,
+    stock: newStock,
+    updatedAt: now,
+    updatedBy
+  };
+
+  products[index] = updatedProduct;
+
+  this.storage.set(
+    this.STORAGE_KEY,
+    products
+  );
+
+  return updatedProduct;
+}
 
     
     //Desactivar producto

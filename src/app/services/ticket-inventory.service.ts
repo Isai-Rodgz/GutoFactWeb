@@ -7,6 +7,7 @@ import { Injectable } from '@angular/core';
 import { InventoryReservation } from '../models/inventory-reservation.model';
 import { InventoryReservationService } from './inventory-reservation.service';
 import { InventoryService } from './inventory.service';
+import { StorageService } from './storage.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,26 +17,34 @@ export class TicketInventoryService {
   constructor(
     private inventoryReservationService:
       InventoryReservationService,
-      private inventoryService:
-      InventoryService
+    private inventoryService:
+      InventoryService,
+    private storage: StorageService
   ) {}
 
   releaseTicketReservations(
     ticketId: string
   ): void {
 
-    const reservations =
-      this.inventoryReservationService
-        .getByTicketId(ticketId);
+    this.storage.runTransaction(
+      [
+        'inventory-reservations'
+      ],
+      () => {
 
-    for (const reservation of reservations) {
+        const reservations =
+          this.inventoryReservationService
+            .getByTicketId(ticketId);
 
-      this.inventoryReservationService.release(
-        reservation.id
-      );
-    }
+        for (const reservation of reservations) {
+
+          this.inventoryReservationService.release(
+            reservation.id
+          );
+        }
+      }
+    );
   }
-
 
   consumeTicketReservations(
     ticketId: string,
@@ -43,32 +52,44 @@ export class TicketInventoryService {
     shiftId?: string
   ): InventoryReservation[] {
 
-    const reservations =
-      this.inventoryReservationService
-        .getByTicketId(ticketId);
+    return this.storage.runTransaction(
+      [
+        'inventory-reservations',
+        'inventory-movements',
+        'products'
+      ],
+      () => {
 
-    const consumedReservations:
-      InventoryReservation[] = [];
+        const reservations =
+          this.inventoryReservationService
+            .getByTicketId(ticketId);
 
-    for (const reservation of reservations) {
+        const consumedReservations:
+          InventoryReservation[] = [];
 
-      this.inventoryService.registerSale(
-        reservation.productId,
-        userId,
-        reservation.quantity,
-        shiftId,
-        `Venta del ticket ${ticketId}`
-      );
+        for (const reservation of reservations) {
 
-      const consumed =
-        this.inventoryReservationService.consume(
-          reservation.id
-        );
+          this.inventoryService.registerSale(
+            reservation.productId,
+            userId,
+            reservation.quantity,
+            shiftId,
+            `Venta del ticket ${ticketId}`
+          );
 
-      consumedReservations.push(consumed);
-    }
+          const consumed =
+            this.inventoryReservationService.consume(
+              reservation.id
+            );
 
-    return consumedReservations;
+          consumedReservations.push(
+            consumed
+          );
+        }
+
+        return consumedReservations;
+      }
+    );
   }
 
 }

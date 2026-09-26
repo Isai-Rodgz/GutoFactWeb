@@ -1,3 +1,4 @@
+
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
@@ -9,8 +10,10 @@ describe('HeaderComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ HeaderComponent ],
-      imports: [IonicModule.forRoot()]
+      imports: [
+        HeaderComponent,
+        IonicModule.forRoot()
+      ]
     }).compileComponents();
 
     fixture = TestBed.createComponent(HeaderComponent);

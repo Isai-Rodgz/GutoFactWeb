@@ -6,6 +6,7 @@ import { Injectable } from '@angular/core';
 import { Ticket } from '../models/ticket.model';
 import { TicketService } from './ticket.service';
 import { TicketInventoryService } from './ticket-inventory.service';
+import { StorageService } from './storage.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,8 @@ export class TicketManagementService {
   constructor(
     private ticketService: TicketService,
     private ticketInventoryService:
-      TicketInventoryService
+      TicketInventoryService,
+    private storage: StorageService
   ) {}
 
   cancel(
@@ -39,15 +41,24 @@ export class TicketManagementService {
       );
     }
 
-    this.ticketInventoryService
-      .releaseTicketReservations(
-        ticketId
-      );
+    return this.storage.runTransaction(
+      [
+        'tickets',
+        'inventory-reservations'
+      ],
+      () => {
 
-    return this.ticketService.cancel(
-      ticketId,
-      cancelledBy,
-      reason
+        this.ticketInventoryService
+          .releaseTicketReservations(
+            ticketId
+          );
+
+        return this.ticketService.cancel(
+          ticketId,
+          cancelledBy,
+          reason
+        );
+      }
     );
   }
 
@@ -72,15 +83,24 @@ export class TicketManagementService {
       );
     }
 
-    this.ticketInventoryService
-      .releaseTicketReservations(
-        ticketId
-      );
+    return this.storage.runTransaction(
+      [
+        'tickets',
+        'inventory-reservations'
+      ],
+      () => {
 
-    return this.ticketService.delete(
-      ticketId,
-      deletedBy,
-      reason
+        this.ticketInventoryService
+          .releaseTicketReservations(
+            ticketId
+          );
+
+        return this.ticketService.delete(
+          ticketId,
+          deletedBy,
+          reason
+        );
+      }
     );
   }
 }
