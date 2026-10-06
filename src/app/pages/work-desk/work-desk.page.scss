@@ -1,3 +1,5 @@
+
+//fondo del contenido de la pagina
 .work-desk-content {
   --background: var(--ion-color-primario1);
 }
@@ -112,8 +114,37 @@
   text-align: center;
 }
 
-.summary-item + .summary-item {
+.summary-item + .summary-item-total {
   border-left: 1px solid var(--ion-color-primario6);
+}
+
+.summary-item-total {
+  flex: 1;
+
+  display: flex;
+  flex-direction:row;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 10%;
+
+  text-align: center;
+}
+
+.summary-total {
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  align-items: center;
+
+}
+
+#checkout-button-summary {
+
+  margin-top: 0;
 }
 
 .summary-label {
@@ -127,6 +158,7 @@
 
   font-weight: 600;
 }
+
 
 /* =========================
    FILTRO Y BÚSQUEDA
@@ -337,5 +369,728 @@
   font-size: 14px;
 
   text-transform: none;
+}
+
+
+/* =========================
+   BUSCADOR
+   ========================= */
+
+.search-bar-container {
+
+  width: 100%;
+
+  padding: 6px 12px;
+
+  background: var(--ion-color-primario1);
+
+  box-sizing: border-box;
+}
+
+.search-bar-container ion-searchbar {
+
+  --background: var(--ion-color-primario5);
+
+  --color: var(--ion-color-secundario-main);
+
+  --placeholder-color: var(--ion-color-secundario4);
+
+  --icon-color: var(--ion-color-primario-main);
+
+  --border-radius: 8px;
+
+  padding: 0;
+}
+
+
+/* =========================
+   SELECTOR DE CATEGORÍA
+   ========================= */
+
+.category-select ion-select {
+
+  width: 100%;
+
+  --color: var(--ion-color-secundario-main);
+
+  --placeholder-color: var(--ion-color-secundario-main);
+
+  padding: 0;
+
+}
+
+
+/* =========================
+   PRODUCTOS
+   ========================= */
+
+.products-container {
+
+  width: 100%;
+
+  padding: 18px;
+
+  box-sizing: border-box;
+}
+
+
+/* =========================
+   GRID
+   ========================= */
+
+.products-grid {
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(auto-fill, minmax(155px, 1fr));
+
+  gap: 14px;
+
+}
+
+
+/* =========================
+   TARJETA
+   ========================= */
+
+.product-card {
+
+  overflow: hidden;
+
+  background:
+    var(--ion-color-primario2);
+
+  border:
+    1px solid var(--ion-color-primario3);
+
+  border-radius: 10px;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+
+.product-card:active {
+
+  transform: scale(0.98);
+
+}
+
+
+/* =========================
+   IMAGEN
+   ========================= */
+
+.product-image {
+
+  width: 100%;
+
+  height: 125px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  background:
+    var(--ion-color-primario5);
+
+  overflow: hidden;
+
+}
+
+
+.product-image img {
+
+  width: 100%;
+
+  height: 100%;
+
+  object-fit: cover;
+
+}
+
+
+.product-image ion-icon {
+
+  color:
+    var(--ion-color-secundario4);
+
+  font-size: 42px;
+
+}
+
+
+/* =========================
+   INFORMACIÓN
+   ========================= */
+
+.product-info {
+
+  padding: 11px 12px 13px;
+
+}
+
+
+.product-info h3 {
+
+  margin: 0 0 6px;
+
+  color:
+    var(--ion-color-secundario-main);
+
+  font-size: 15px;
+
+  font-weight: 600;
+
+  line-height: 1.25;
+
+}
+
+
+.product-price {
+
+  color:
+    var(--ion-color-primario-main);
+
+  font-size: 15px;
+
+  font-weight: 700;
+
+}
+
+
+/* =========================
+   SIN PRODUCTOS
+   ========================= */
+
+.products-empty {
+
+  min-height: 220px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  text-align: center;
+
+  padding: 20px;
+
+}
+
+
+.products-empty ion-icon {
+
+  color:
+    var(--ion-color-secundario4);
+
+  font-size: 42px;
+
+  margin-bottom: 10px;
+
+}
+
+
+.products-empty p {
+
+  margin: 0;
+
+  color:
+    var(--ion-color-secundario4);
+
+  font-size: 15px;
+
+}
+
+
+/* =========================
+   MODAL DE COBRO
+   ========================= */
+
+
+//estilos del botón de cobro
+
+.checkout-button {
+  margin-top: 12px;
+
+  --background: var(--ion-color-primario-main);
+  --background-activated: var(--ion-color-primario6);
+  --color: var(--ion-color-primario-main-contrast);
+
+  --border-radius: 8px;
+
+  font-weight: 600;
+}
+
+
+//estilos del modal de cobro
+
+.checkout-modal {
+  --width: 500px;
+  --max-width: 95%;
+  --height: auto;
+  --max-height: 90%;
+  --border-radius: 10px;
+}
+
+
+//estilos del encabezado del modal
+
+.checkout-modal ion-header ion-toolbar {
+  --background: var(--ion-color-primario2);
+  --color: var(--ion-color-secundario-main);
+
+  border-bottom: 1px solid var(--ion-color-secundario3);
+}
+
+//estilos del título del modal
+.checkout-modal ion-title {
+  color: var(--ion-color-secundario-main);
+
+  font-size: 18px;
+  font-weight: 600;
+}
+
+//estilos del botón de cerrar el modal
+.checkout-modal ion-button {
+  --color: var(--ion-color-primario-main);
+}
+
+
+//contenedor del cobro
+
+.checkout-container {
+  padding: 24px 20px 20px;
+}
+
+
+//total a pagar
+
+.checkout-total {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 15px;
+
+  margin-bottom: 24px;
+  padding: 18px;
+
+  background: var(--ion-color-primario5);
+
+  border-radius: 10px;
+}
+
+//estilos del texto del total a pagar
+.checkout-total span {
+  color: var(--ion-color-secundario4);
+  font-size: 14px;
+}
+
+//estilos del valor del total a pagar
+.checkout-total strong {
+  color: var(--ion-color-primario-main);
+
+  font-size: 24px;
+  font-weight: 600;
+}
+
+
+//sección de métodos de pago
+
+.payment-section h2 {
+  margin: 0 0 14px;
+
+  color: var(--ion-color-secundario-main);
+
+  font-size: 17px;
+  font-weight: 600;
+}
+
+
+//opciones de pago
+
+.payment-options {
+  display: grid;
+
+  grid-template-columns: repeat(3, 1fr);
+
+  gap: 10px;
+}
+
+
+//botón individual de método de pago
+
+.payment-option {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  flex-direction: column;
+
+  gap: 8px;
+
+  min-height: 100px;
+
+  padding: 14px;
+
+  background: var(--ion-color-primario2);
+
+  border: 1px solid var(--ion-color-primario3);
+
+  border-radius: 10px;
+
+  color: var(--ion-color-secundario-main);
+
+  cursor: pointer;
+}
+
+//estilos del icono del método de pago
+.payment-option ion-icon {
+  font-size: 28px;
+
+  color: var(--ion-color-secundario4);
+}
+
+//estilos del texto del método de pago
+.payment-option span {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+
+//método seleccionado
+
+.payment-option.selected {
+  border-color: var(--ion-color-primario-main);
+
+  background: var(--ion-color-primario5);
+
+  color: var(--ion-color-primario-main);
+}
+
+//estilos del icono del método de pago seleccionado
+.payment-option.selected ion-icon {
+  color: var(--ion-color-primario-main);
+}
+
+
+//mensaje de error
+
+.checkout-error {
+  margin-top: 16px;
+
+  padding: 12px 14px;
+
+  background: var(--ion-color-primario2);
+
+  border: 1px solid var(--ion-color-danger);
+
+  border-radius: 8px;
+
+  color: var(--ion-color-danger);
+
+  font-size: 14px;
+}
+
+
+//acciones del modal
+
+.checkout-actions {
+  display: flex;
+
+  justify-content: flex-end;
+
+  gap: 10px;
+
+  margin-top: 24px;
+}
+
+//estilos de los botones de acción del modal
+.checkout-actions ion-button {
+  min-height: 43px;
+
+  margin: 0;
+
+  text-transform: none;
+}
+
+//estilos del botón secundario
+.checkout-actions .secondary-button {
+  --color: var(--ion-color-primario-main);
+  --border-color: var(--ion-color-primario-main);
+
+  --border-radius: 8px;
+}
+
+//estilos del botón primario
+.checkout-actions .primary-button {
+  --background: var(--ion-color-primario-main);
+  --background-activated: var(--ion-color-primario6);
+  --color: var(--ion-color-primario-main-contrast);
+
+  --border-radius: 8px;
+}
+
+
+//estilos de la referencia del pago
+
+.payment-reference {
+  margin-top: 18px;
+}
+
+.payment-reference ion-item {
+  --background: var(--ion-color-primario2);
+  --border-color: var(--ion-color-primario3);
+
+  border: 1px solid var(--ion-color-primario3);
+  border-radius: 8px;
+}
+
+.payment-reference ion-label {
+  color: var(--ion-color-secundario4);
+}
+
+.payment-reference ion-input {
+  --color: var(--ion-color-secundario-main);
+}
+
+
+/*=========================
+   MEDIA QUERIES
+   ========================= */
+
+//estilos para pantallas pequeñas (móviles)
+@media (max-width: 600px) {
+
+  //ajusta el grid de opciones de pago a una sola columna
+  .payment-options {
+    grid-template-columns: 1fr;
+  }
+
+  //ajusta la altura mínima de cada opción de pago y cambia la dirección del contenido a fila
+  .payment-option {
+    min-height: 70px;
+
+    flex-direction: row;
+  }
+
+  //ajusta la dirección de los botones de acción del modal a columna
+  .checkout-actions {
+    flex-direction: column;
+  }
+
+  //ajusta el ancho de los botones de acción del modal al 100%
+  .checkout-actions ion-button {
+    width: 100%;
+  }
+}
+
+
+//sección de tickets abiertos
+.open-tickets-section {
+  margin-bottom: 20px;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+
+  h2 {
+    margin: 0;
+    color: var(--ion-color-secundario-main);
+    font-size: 20px;
+    font-weight: 700;
+  }
+}
+
+.open-tickets-list {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+
+.ticket-card {
+  min-width: 120px;
+  padding: 12px;
+  border: 1px solid var(--ion-color-primario3);
+  border-radius: 10px;
+  background: var(--ion-color-primario2);
+  color: var(--ion-color-secundario-main);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 5px;
+  cursor: pointer;
+  transition: 0.2s ease;
+
+  .ticket-number {
+    font-weight: 700;
+    font-size: 15px;
+  }
+
+  .ticket-status {
+    color: var(--ion-color-secundario4);
+    font-size: 13px;
+  }
+
+  &.selected {
+    border-color: var(--ion-color-primario-main);
+    box-shadow: 0 0 0 1px var(--ion-color-primario-main);
+  }
+}
+
+.new-ticket-button {
+  --color: var(--ion-color-primario-main);
+  --border-color: var(--ion-color-primario-main);
+}
+
+.no-open-tickets {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 20px;
+  padding: 14px;
+  border: 1px solid var(--ion-color-primario3);
+  border-radius: 10px;
+  background: var(--ion-color-primario2);
+
+  p {
+    margin: 0;
+    color: var(--ion-color-secundario4);
+  }
+}
+
+@media (max-width: 600px) {
+  .section-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .no-open-tickets {
+    align-items: stretch;
+    flex-direction: column;
+  }
+}
+
+
+  //acciones de gestión del ticket
+  .ticket-management-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 16px;
+
+    ion-button {
+      flex: 1;
+      margin: 0;
+    }
+
+    .cancel-ticket-button {
+      --color: var(--ion-color-danger);
+      --border-color: var(--ion-color-danger);
+    }
+
+    .delete-ticket-button {
+      --color: var(--ion-color-secundario-main);
+      --border-color: var(--ion-color-secundario-main);
+    }
+  }
+
+
+  @media (max-width: 600px) {
+  .ticket-management-actions {
+    flex-direction: column;
+  }
+}
+
+
+//modal de acciones del ticket
+.ticket-action-modal {
+  --width: 480px;
+  --max-width: 95%;
+  --height: auto;
+  --max-height: 90%;
+  --border-radius: 12px;
+}
+
+.ticket-action-form {
+  padding: 24px;
+
+  h2 {
+    margin: 0 0 8px;
+    color: var(--ion-color-secundario-main);
+    font-size: 22px;
+    font-weight: 700;
+  }
+
+  p {
+    margin: 0 0 20px;
+    color: var(--ion-color-secundario4);
+    line-height: 1.5;
+  }
+
+  ion-item {
+    --background: transparent;
+    --padding-start: 0;
+    --inner-padding-end: 0;
+    margin-bottom: 20px;
+  }
+
+  ion-label {
+    color: var(--ion-color-secundario4);
+    margin-bottom: 8px;
+  }
+
+  ion-textarea {
+    --background: var(--ion-color-primario1);
+    --color: var(--ion-color-secundario-main);
+    --padding-start: 12px;
+    --padding-end: 12px;
+    --padding-top: 10px;
+    --padding-bottom: 10px;
+    border: 1px solid var(--ion-color-primario3);
+    border-radius: 8px;
+  }
+}
+
+.ticket-action-modal-buttons {
+  display: flex;
+  gap: 10px;
+
+  ion-button {
+    flex: 1;
+    margin: 0;
+  }
+
+  .secondary-button {
+    --color: var(--ion-color-primario-main);
+    --border-color: var(--ion-color-primario-main);
+  }
+
+  .danger-action-button {
+    --background: var(--ion-color-danger);
+    --color: var(--ion-color-primary-contrast);
+  }
+}
+
+@media (max-width: 600px) {
+  .ticket-action-modal-buttons {
+    flex-direction: column;
+  }
 }
 

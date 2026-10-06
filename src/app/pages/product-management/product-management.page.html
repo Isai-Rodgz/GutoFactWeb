@@ -1,0 +1,473 @@
+
+
+<!-- Product Management Page -->
+<ion-header>
+
+  <ion-toolbar>
+
+    <ion-title>
+      Productos
+    </ion-title>
+
+    <ion-buttons slot="end">
+
+      <!-- Botón para volver al escritorio de trabajo -->
+      <ion-button
+        (click)="goToWorkDesk()">
+
+        <ion-icon
+          slot="icon-only"
+          name="arrow-back-outline">
+        </ion-icon>
+
+      </ion-button>
+
+    </ion-buttons>
+
+  </ion-toolbar>
+
+</ion-header>
+
+
+<ion-content>
+
+  <!-- ENCABEZADO -->
+
+  <div class="page-header">
+
+    <div>
+
+      <h1>
+        Productos
+      </h1>
+
+      <p>
+        Administra los productos de tu negocio.
+      </p>
+
+    </div>
+
+    <!-- Botón para abrir el formulario de nuevo producto -->
+    <ion-button
+      class="new-product-button"
+      (click)="openForm()">
+
+      <ion-icon
+        slot="start"
+        name="add-outline">
+      </ion-icon>
+
+      Nuevo producto
+
+    </ion-button>
+
+  </div>
+
+
+  <!-- BUSQUEDA Y FILTRO -->
+
+  <div class="filters-container">
+
+    <!-- Barra de búsqueda -->
+    <ion-searchbar
+      [(ngModel)]="searchTerm"
+      (ionInput)="onSearchChange()"
+      placeholder="Buscar producto..."
+      [debounce]="150">
+    </ion-searchbar>
+
+
+    <!-- Selector de categoría para filtrar productos -->
+    <ion-select
+      interface="popover"
+      [value]="selectedCategoryId"
+      (ionChange)="selectCategory($event.detail.value)"
+      placeholder="Todas las categorías">
+
+      <!-- Opción para mostrar todos los productos sin filtrar por categoría -->
+      <ion-select-option [value]="null">
+        Todas las categorías
+      </ion-select-option>
+
+      <!-- Opciones de categorías obtenidas del servicio de categorías -->
+      <ion-select-option
+        *ngFor="let category of categories"
+        [value]="category.id">
+
+        {{ category.name }}
+
+      </ion-select-option>
+
+    </ion-select>
+
+  </div>
+
+
+  <!-- PRODUCTOS -->
+
+  <div
+    class="products-container"
+    *ngIf="filteredProducts.length > 0">
+
+    <div
+      class="product-card"
+      *ngFor="let product of filteredProducts"
+      [class.inactive]="!product.isActive">
+
+      <!-- Imagen del producto o ícono de imagen si no hay imagen disponible -->
+      <div class="product-image">
+
+        <img
+          *ngIf="product.imageUrl"
+          [src]="product.imageUrl"
+          [alt]="product.name">
+
+        <ion-icon
+          *ngIf="!product.imageUrl"
+          name="image-outline">
+        </ion-icon>
+
+      </div>
+
+
+      <!-- Información del producto: nombre, descripción, categoría, precio y stock -->
+      <div class="product-info">
+
+        <h2>
+          {{ product.name }}
+        </h2>
+
+        <p
+          *ngIf="product.description">
+
+          {{ product.description }}
+
+        </p>
+
+        <span class="product-category">
+
+          {{ getCategoryName(product.categoryId) }}
+
+        </span>
+
+        <div class="product-details">
+
+          <strong>
+            RD${{ product.price | number:'1.2-2' }}
+          </strong>
+
+          <span>
+            Stock: {{ product.stock }}
+          </span>
+
+        </div>
+
+        <!-- Acciones disponibles para cada producto: editar y activar/desactivar -->
+        <div class="product-actions">
+
+          <!-- Botón para editar el producto -->
+          <ion-button
+            fill="clear"
+            size="small"
+            (click)="editProduct(product)">
+
+            <ion-icon
+              slot="start"
+              name="create-outline">
+            </ion-icon>
+
+            Editar
+
+          </ion-button>
+
+
+          <!-- Botón para activar o desactivar el producto según su estado actual -->
+          <ion-button
+            fill="clear"
+            size="small"
+            [color]="product.isActive ? 'danger' : 'success'"
+            (click)="toggleProductStatus(product)">
+
+            <ion-icon
+              slot="start"
+              [name]="product.isActive
+                ? 'close-circle-outline'
+                : 'checkmark-circle-outline'">
+            </ion-icon>
+
+            {{ product.isActive ? 'Desactivar' : 'Activar' }}
+
+          </ion-button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ESTADO VACIO -->
+
+  <div
+    class="empty-state"
+    *ngIf="filteredProducts.length === 0">
+
+    <ion-icon
+      name="cube-outline">
+    </ion-icon>
+
+    <h2>
+      No hay productos
+    </h2>
+
+    <p>
+      Registra tu primer producto para comenzar.
+    </p>
+
+    <!-- Botón para abrir el formulario de nuevo producto -->
+    <ion-button
+      class="new-product-button"
+      (click)="openForm()">
+
+      <ion-icon
+        slot="start"
+        name="add-outline">
+      </ion-icon>
+
+      Crear producto
+
+    </ion-button>
+
+  </div>
+
+
+  <!-- FORMULARIO -->
+
+  <ion-modal
+    [isOpen]="showForm"
+    (didDismiss)="closeForm()">
+
+    <!-- Contenido del formulario de nuevo producto -->
+    <ng-template>
+
+      <ion-header>
+
+        <ion-toolbar>
+
+          <!-- Título del formulario: "Editar producto" si se está editando un producto existente, o "Nuevo producto" si se está creando uno nuevo -->
+          <ion-title>
+            {{ editingProductId ? 'Editar producto' : 'Nuevo producto' }}
+          </ion-title>
+
+          <ion-buttons slot="end">
+
+            <!-- Botón para cerrar el formulario de nuevo producto -->
+            <ion-button
+              (click)="closeForm()">
+
+              Cerrar
+
+            </ion-button>
+
+          </ion-buttons>
+
+        </ion-toolbar>
+
+      </ion-header>
+
+
+      <!-- Contenido del formulario de nuevo producto -->
+      <ion-content>
+
+        <div class="product-form">
+
+          <!-- Título del formulario: "Editar producto" si se está editando un producto existente, o "Crear producto" si se está creando uno nuevo -->
+          <h2>
+            {{ editingProductId ? 'Editar producto' : 'Crear producto' }}
+          </h2>
+
+          <p>
+            Registra la información del producto.
+          </p>
+
+
+          <!-- FOTO -->
+
+          <div class="product-image-preview">
+
+            <img
+              *ngIf="productImageUrl"
+              [src]="productImageUrl"
+              alt="Vista previa">
+
+            <ion-icon
+              *ngIf="!productImageUrl"
+              name="image-outline">
+            </ion-icon>
+
+          </div>
+
+
+          <ion-item>
+
+            <!-- Campo de entrada para la URL de la imagen del producto -->
+            <ion-input
+              label="URL de la imagen"
+              labelPlacement="floating"
+              [(ngModel)]="productImageUrl">
+            </ion-input>
+
+          </ion-item>
+
+
+          <!-- NOMBRE -->
+
+          <ion-item>
+
+            <!-- Campo de entrada para el nombre del producto -->
+            <ion-input
+              label="Nombre"
+              labelPlacement="floating"
+              [(ngModel)]="productName">
+            </ion-input>
+
+          </ion-item>
+
+
+          <!-- DESCRIPCIÓN -->
+
+          <ion-item>
+
+            <!-- Campo de texto para la descripción del producto -->
+            <ion-textarea
+              label="Descripción"
+              labelPlacement="floating"
+              [autoGrow]="true"
+              [(ngModel)]="productDescription">
+            </ion-textarea>
+
+          </ion-item>
+
+
+          <!-- CATEGORÍA -->
+
+          <ion-item>
+
+            <!-- Selector de categoría para asignar al producto -->
+            <ion-select
+              label="Categoría"
+              labelPlacement="floating"
+              [(ngModel)]="productCategoryId"
+              interface="popover">
+
+              <ion-select-option [value]="null">
+                Sin categoría
+              </ion-select-option>
+
+              <ion-select-option
+                *ngFor="let category of categories"
+                [value]="category.id">
+
+                {{ category.name }}
+
+              </ion-select-option>
+
+            </ion-select>
+
+          </ion-item>
+
+
+          <!-- PRECIO -->
+
+          <ion-item>
+
+            <!-- Campo de entrada para el precio de venta del producto -->
+            <ion-input
+              label="Precio de venta"
+              labelPlacement="floating"
+              type="number"
+              min="0"
+              [(ngModel)]="productPrice">
+            </ion-input>
+
+          </ion-item>
+
+
+          <!-- COSTO -->
+
+          <ion-item>
+
+            <!-- Campo de entrada para el costo del producto -->
+            <ion-input
+              label="Costo"
+              labelPlacement="floating"
+              type="number"
+              min="0"
+              [(ngModel)]="productCost">
+            </ion-input>
+
+          </ion-item>
+
+
+          <!-- STOCK -->
+
+          <ion-item>
+
+            <!-- Campo de entrada para el stock inicial del producto -->
+            <ion-input
+              label="Stock inicial"
+              labelPlacement="floating"
+              type="number"
+              min="0"
+              [(ngModel)]="productStock">
+            </ion-input>
+
+          </ion-item>
+
+
+          <!-- Mensaje de error si hay algún problema al crear el producto -->
+          <p
+            class="product-error"
+            *ngIf="productError">
+
+            {{ productError }}
+
+          </p>
+
+
+          <!-- Botones para crear el producto o cancelar la operación -->
+          <ion-button
+            expand="block"
+            class="save-product-button"
+            (click)="editingProductId
+              ? updateProduct()
+              : createProduct()">
+
+            {{ editingProductId
+              ? 'Guardar cambios'
+              : 'Crear producto' }}
+
+          </ion-button>
+
+
+          <!-- Botón para cerrar el formulario de nuevo producto -->
+          <ion-button
+            expand="block"
+            fill="clear"
+            (click)="closeForm()">
+
+            Cancelar
+
+          </ion-button>
+
+        </div>
+
+      </ion-content>
+
+    </ng-template>
+
+  </ion-modal>
+
+</ion-content>

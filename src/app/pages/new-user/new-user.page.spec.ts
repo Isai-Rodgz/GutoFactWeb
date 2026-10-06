@@ -12,8 +12,10 @@ describe('NewUserPage', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
-        NewUserPage,
         IonicModule.forRoot()
+      ],
+      declarations: [
+        NewUserPage
       ],
       providers: [
         AuthService,

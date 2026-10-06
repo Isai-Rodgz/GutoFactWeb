@@ -1,0 +1,708 @@
+
+<!-- Caja / Turnos -->
+<ion-header>
+
+  <ion-toolbar>
+
+    <ion-title>
+      Caja / Turnos
+    </ion-title>
+
+    <ion-buttons slot="end">
+
+      <ion-button
+        (click)="goToWorkDesk()">
+
+        <ion-icon
+          slot="icon-only"
+          name="arrow-back-outline">
+        </ion-icon>
+
+      </ion-button>
+
+    </ion-buttons>
+
+  </ion-toolbar>
+
+</ion-header>
+
+
+<ion-content>
+
+  <!-- ENCABEZADO -->
+
+  <div class="page-header">
+
+    <div>
+
+      <h1>
+        Caja / Turnos
+      </h1>
+
+      <p>
+        Administra la apertura, movimientos y cierre
+        de la caja.
+      </p>
+
+    </div>
+
+    <!-- BOTÓN PARA ABRIR TURNO -->
+    <ion-button
+      *ngIf="!currentShift"
+      class="primary-button"
+      (click)="openOpenShiftForm()">
+
+      <ion-icon
+        slot="start"
+        name="play-outline">
+      </ion-icon>
+
+      Abrir turno
+
+    </ion-button>
+
+  </div>
+
+
+  <!-- SIN TURNO -->
+
+  <div
+    class="empty-state"
+    *ngIf="!currentShift">
+
+    <ion-icon
+      name="cash-outline">
+    </ion-icon>
+
+    <h2>
+      No hay un turno abierto
+    </h2>
+
+    <p>
+      Abre un turno para comenzar a administrar
+      la caja y registrar operaciones.
+    </p>
+
+    <!-- BOTÓN PARA ABRIR TURNO -->
+    <ion-button
+      class="primary-button"
+      (click)="openOpenShiftForm()">
+
+      Abrir turno
+
+    </ion-button>
+
+  </div>
+
+
+  <!-- TURNO ACTUAL -->
+
+  <div
+    class="shift-container"
+    *ngIf="currentShift && currentSummary">
+
+    <!-- CABECERA DEL TURNO -->
+    <div class="shift-header">
+
+      <div>
+
+        <span class="section-label">
+          Turno actual
+        </span>
+
+        <h2>
+          {{ currentShift!.id }}
+        </h2>
+
+        <p>
+          Apertura:
+          {{ currentShift!.openedAt | date:'dd/MM/yyyy HH:mm' }}
+        </p>
+
+      </div>
+
+      <span class="shift-status">
+        Abierto
+      </span>
+
+    </div>
+
+
+    <!-- RESUMEN -->
+
+    <div class="summary-grid">
+
+      <!-- RESUMEN DE TICKETS -->
+      <div class="summary-card">
+
+        <span>
+          Tickets
+        </span>
+
+        <strong>
+          {{ currentSummary!.totalTickets }}
+        </strong>
+
+      </div>
+
+
+      <!-- RESUMEN DE VENTAS -->
+      <div class="summary-card">
+
+        <span>
+          Ventas
+        </span>
+
+        <strong>
+          {{ currentSummary!.totalSales | number:'1.2-2' }}
+        </strong>
+
+      </div>
+
+
+      <!-- RESUMEN DE VENTAS POR MÉTODO DE PAGO -->
+      <div class="summary-card">
+
+        <span>
+          Efectivo
+        </span>
+
+        <strong>
+          {{ currentSummary!.cashSales | number:'1.2-2' }}
+        </strong>
+
+      </div>
+
+
+      <div class="summary-card">
+
+        <span>
+          Tarjeta
+        </span>
+
+        <strong>
+          {{ currentSummary!.cardSales | number:'1.2-2' }}
+        </strong>
+
+      </div>
+
+
+      <div class="summary-card">
+
+        <span>
+          Transferencias
+        </span>
+
+        <strong>
+          {{ currentSummary!.transferSales | number:'1.2-2' }}
+        </strong>
+
+      </div>
+
+
+      <!-- RESUMEN DE EFECTIVO ESPERADO -->
+      <div class="summary-card highlight">
+
+        <span>
+          Efectivo esperado
+        </span>
+
+        <strong>
+          {{ currentSummary!.expectedCash | number:'1.2-2' }}
+        </strong>
+
+      </div>
+
+    </div>
+
+
+    <!-- ACCIONES -->
+
+    <div class="action-section">
+
+      <!-- Botón para abrir el formulario de movimiento de caja -->
+      <ion-button
+        class="primary-button"
+        (click)="openMovementForm()">
+
+        <ion-icon
+          slot="start"
+          name="swap-vertical-outline">
+        </ion-icon>
+
+        Movimiento de caja
+
+      </ion-button>
+
+      <!-- Botón para ir al historial de turnos -->
+      <ion-button
+        fill="outline"
+        (click)="goToShiftHistory()">
+        <ion-icon
+          name="time-outline"
+          slot="start">
+        </ion-icon>
+
+        Historial de turnos
+      </ion-button>
+
+      <!-- Botón para abrir el formulario de cierre de turno -->
+      <ion-button
+        fill="outline"
+        class="secondary-button"
+        (click)="openCloseShiftForm()">
+
+        <ion-icon
+          slot="start"
+          name="lock-closed-outline">
+        </ion-icon>
+
+        Cerrar turno
+
+      </ion-button>
+
+    </div>
+
+
+    <!-- MOVIMIENTOS -->
+
+    <div class="section-header">
+
+      <div>
+
+        <h2>
+          Movimientos de caja
+        </h2>
+
+        <p>
+          Operaciones registradas durante este turno.
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <!-- LISTA DE MOVIMIENTOS -->
+    <div
+      class="movements-container"
+      *ngIf="cashMovements.length > 0">
+
+      <div
+        class="movement-card"
+        *ngFor="let movement of cashMovements">
+
+        <div class="movement-icon">
+
+          <!-- Icono que indica si es un depósito o un retiro -->
+          <ion-icon
+            [name]="
+              movement.type === 'withdrawal'
+                ? 'arrow-down-outline'
+                : 'arrow-up-outline'
+            ">
+          </ion-icon>
+
+        </div>
+
+        <!-- Información del movimiento: tipo, descripción y fecha -->
+        <div class="movement-info">
+
+          <h3>
+            {{ getMovementTypeLabel(movement.type) }}
+          </h3>
+
+          <p>
+            {{ movement.description || 'Sin descripción' }}
+          </p>
+
+          <span>
+            {{ movement.createdAt | date:'dd/MM/yyyy HH:mm' }}
+          </span>
+
+        </div>
+
+        <!-- Monto del movimiento con formato y color según el tipo -->
+        <strong
+          [class.movement-out]="movement.type === 'withdrawal' || movement.type === 'refund'"
+          [class.movement-in]="movement.type !== 'withdrawal' && movement.type !== 'refund'">
+
+          {{
+            movement.type === 'withdrawal' ||
+            movement.type === 'refund'
+              ? '-'
+              : '+'
+          }}{{ movement.amount | number:'1.2-2' }}
+
+        </strong>
+
+      </div>
+
+    </div>
+
+
+    <!-- MENSAJE DE SIN MOVIMIENTOS -->
+    <div
+      class="empty-movements"
+      *ngIf="cashMovements.length === 0">
+
+      <ion-icon
+        name="receipt-outline">
+      </ion-icon>
+
+      <p>
+        No hay movimientos registrados.
+      </p>
+
+    </div>
+
+  </div>
+
+
+  <!-- MODAL ABRIR TURNO -->
+
+  <ion-modal
+    class="cash-modal"
+    [isOpen]="showOpenForm"
+    (didDismiss)="closeOpenShiftForm()">
+
+    <ng-template>
+
+      <ion-header>
+
+        <ion-toolbar>
+
+          <ion-title>
+            Abrir turno
+          </ion-title>
+
+          <ion-buttons slot="end">
+
+            <!-- Botón para cerrar el modal de abrir turno -->
+            <ion-button
+              (click)="closeOpenShiftForm()">
+
+              Cerrar
+
+            </ion-button>
+
+          </ion-buttons>
+
+        </ion-toolbar>
+
+      </ion-header>
+
+      <ion-content>
+
+        <!-- FORMULARIO DE APERTURA DE TURNO -->
+        <div class="modal-form">
+
+          <h2>
+            Apertura de caja
+          </h2>
+
+          <p>
+            Indica cuánto efectivo hay físicamente
+            en la caja al comenzar el turno.
+          </p>
+
+          <ion-item>
+
+            <!-- Campo de entrada para el efectivo inicial -->
+            <ion-input
+              type="number"
+              label="Efectivo inicial"
+              labelPlacement="floating"
+              [(ngModel)]="initialCash"
+              min="0">
+            </ion-input>
+
+          </ion-item>
+
+          <!-- Mensaje de error si hay un problema al abrir el turno -->
+          <p
+            class="form-error"
+            *ngIf="openError">
+
+            {{ openError }}
+
+          </p>
+
+          <!-- Botones de acción para abrir el turno o cancelar -->
+          <div class="modal-actions">
+
+            <ion-button
+              expand="block"
+              (click)="saveOpenShift()">
+
+              Abrir turno
+
+            </ion-button>
+
+            <ion-button
+              expand="block"
+              fill="outline"
+              (click)="closeOpenShiftForm()">
+
+              Cancelar
+
+            </ion-button>
+
+          </div>
+
+        </div>
+
+      </ion-content>
+
+    </ng-template>
+
+  </ion-modal>
+
+
+  <!-- MODAL MOVIMIENTO -->
+
+  <ion-modal
+    class="cash-modal"
+    [isOpen]="showMovementForm"
+    (didDismiss)="closeMovementForm()">
+
+    <ng-template>
+
+      <ion-header>
+
+        <ion-toolbar>
+
+          <ion-title>
+            Movimiento de caja
+          </ion-title>
+
+          <!-- Botón para cerrar el modal de movimiento de caja -->
+          <ion-buttons slot="end">
+
+            <ion-button
+              (click)="closeMovementForm()">
+
+              Cerrar
+
+            </ion-button>
+
+          </ion-buttons>
+
+        </ion-toolbar>
+
+      </ion-header>
+
+      <ion-content>
+
+        <div class="modal-form">
+
+          <h2>
+            Registrar movimiento
+          </h2>
+
+          <p>
+            Registra un depósito o retiro de efectivo.
+          </p>
+
+          <ion-item>
+
+            <!-- Selector para elegir el tipo de movimiento: depósito o retiro -->
+            <ion-select
+              label="Tipo"
+              labelPlacement="floating"
+              [(ngModel)]="movementType"
+              interface="popover">
+
+              <ion-select-option value="deposit">
+                Depósito
+              </ion-select-option>
+
+              <ion-select-option value="withdrawal">
+                Retiro
+              </ion-select-option>
+
+            </ion-select>
+
+          </ion-item>
+
+          <ion-item>
+
+            <!-- Campo de entrada para el monto del movimiento -->
+            <ion-input
+              type="number"
+              label="Monto"
+              labelPlacement="floating"
+              [(ngModel)]="movementAmount"
+              min="0">
+            </ion-input>
+
+          </ion-item>
+
+          <ion-item>
+
+            <!-- Campo de texto para la descripción del movimiento -->
+            <ion-textarea
+              label="Descripción"
+              labelPlacement="floating"
+              [(ngModel)]="movementDescription"
+              autoGrow="true">
+            </ion-textarea>
+
+          </ion-item>
+
+          <!-- Mensaje de error si hay un problema al registrar el movimiento -->
+          <p
+            class="form-error"
+            *ngIf="movementError">
+
+            {{ movementError }}
+
+          </p>
+
+          <!-- Botones de acción para registrar el movimiento o cancelar -->
+          <div class="modal-actions">
+
+            <ion-button
+              expand="block"
+              (click)="saveMovement()">
+
+              Registrar movimiento
+
+            </ion-button>
+
+            <!-- Botón para cancelar y cerrar el modal de movimiento de caja -->
+            <ion-button
+              expand="block"
+              fill="outline"
+              (click)="closeMovementForm()">
+
+              Cancelar
+
+            </ion-button>
+
+          </div>
+
+        </div>
+
+      </ion-content>
+
+    </ng-template>
+
+  </ion-modal>
+
+
+  <!-- MODAL CERRAR TURNO -->
+
+  <ion-modal
+    class="cash-modal"
+    [isOpen]="showCloseForm"
+    (didDismiss)="closeCloseShiftForm()">
+
+    <ng-template>
+
+      <ion-header>
+
+        <ion-toolbar>
+
+          <ion-title>
+            Cerrar turno
+          </ion-title>
+
+          <ion-buttons slot="end">
+
+            <!-- Botón para cerrar el modal de cierre de turno -->
+            <ion-button
+              (click)="closeCloseShiftForm()">
+
+              Cerrar
+
+            </ion-button>
+
+          </ion-buttons>
+
+        </ion-toolbar>
+
+      </ion-header>
+
+      <ion-content>
+
+        <div class="modal-form">
+
+          <h2>
+            Cierre de caja
+          </h2>
+
+          <p>
+            Cuenta físicamente el efectivo de la caja
+            e introduce el monto encontrado.
+          </p>
+
+          <ion-item>
+
+            <!-- Campo de entrada para el efectivo final -->
+            <ion-input
+              type="number"
+              label="Efectivo final"
+              labelPlacement="floating"
+              [(ngModel)]="finalCash"
+              min="0">
+            </ion-input>
+
+          </ion-item>
+
+          <!-- Muestra el efectivo esperado según los movimientos y ventas del turno -->
+          <div
+            class="expected-cash"
+            *ngIf="currentSummary">
+
+            <span>
+              Efectivo esperado
+            </span>
+
+            <strong>
+              {{ currentSummary!.expectedCash | number:'1.2-2' }}
+            </strong>
+
+          </div>
+
+          <!-- Mensaje de error si hay un problema al cerrar el turno -->
+          <p
+            class="form-error"
+            *ngIf="closeError">
+
+            {{ closeError }}
+
+          </p>
+
+          <div class="modal-actions">
+
+            <!-- Botón para guardar y cerrar el turno -->
+            <ion-button
+              expand="block"
+              (click)="saveCloseShift()">
+
+              Cerrar turno
+
+            </ion-button>
+
+            <!-- Botón para cancelar y cerrar el modal de cierre de turno -->
+            <ion-button
+              expand="block"
+              fill="outline"
+              (click)="closeCloseShiftForm()">
+
+              Cancelar
+
+            </ion-button>
+
+          </div>
+
+        </div>
+
+      </ion-content>
+
+    </ng-template>
+
+  </ion-modal>
+
+</ion-content>

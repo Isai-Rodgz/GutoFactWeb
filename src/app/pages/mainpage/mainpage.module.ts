@@ -9,6 +9,7 @@ import { MainpagePageRoutingModule } from './mainpage-routing.module';
 import { MainpagePage } from './mainpage.page';
 import { SharetModule } from 'src/app/sharet/sharet.module';
 import { RouterModule } from '@angular/router';
+import { RouterLink } from '@angular/router';
 
 @NgModule({
   imports: [
@@ -16,10 +17,10 @@ import { RouterModule } from '@angular/router';
     FormsModule,
     IonicModule,
     MainpagePageRoutingModule,
-    MainpagePage,
     SharetModule,
-    RouterModule
+    RouterModule,
+    RouterLink
   ],
-  declarations: []
+  declarations: [MainpagePage]
 })
 export class MainpagePageModule {}

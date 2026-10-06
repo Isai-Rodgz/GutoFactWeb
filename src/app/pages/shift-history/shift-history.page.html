@@ -1,0 +1,425 @@
+
+<!-- Historical de turnos page template -->
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button
+        fill="clear"
+        (click)="goToCashManagement()">
+        <ion-icon
+          name="arrow-back-outline"
+          slot="icon-only">
+        </ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+    <ion-title>Historial de turnos</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<!-- Contenido principal de la página -->
+<ion-content>
+
+  <div class="page-container">
+
+    <div class="page-header">
+      <div>
+        <h1>Historial de turnos</h1>
+        <p>Consulta los turnos que ya fueron cerrados.</p>
+      </div>
+    </div>
+
+    <!-- SIN TURNOS -->
+    <div
+      class="empty-state"
+      *ngIf="shifts.length === 0">
+
+      <ion-icon name="time-outline"></ion-icon>
+
+      <h2>No hay turnos cerrados</h2>
+
+      <p>
+        Los turnos aparecerán aquí después de ser cerrados.
+      </p>
+    </div>
+
+    <!-- LISTA DE TURNOS -->
+    <div
+      class="shift-list"
+      *ngIf="shifts.length > 0">
+
+      <div
+        class="shift-card"
+        *ngFor="let shift of shifts">
+
+        <!-- CABECERA DEL TURNO -->
+        <div class="shift-card-header">
+
+          <div>
+            <span class="shift-label">
+              Turno
+            </span>
+
+            <h2>
+              {{ shift.id }}
+            </h2>
+          </div>
+
+          <span class="status-badge">
+            Cerrado
+          </span>
+
+        </div>
+
+        <!-- INFORMACIÓN DEL TURNO -->
+        <div class="shift-info-grid">
+
+          <div class="info-item">
+            <span>Fecha de apertura</span>
+
+            <strong>
+              {{ shift.openedAt | date:'dd/MM/yyyy HH:mm' }}
+            </strong>
+          </div>
+
+          <div class="info-item">
+            <span>Fecha de cierre</span>
+
+            <strong>
+              {{ shift.closedAt | date:'dd/MM/yyyy HH:mm' }}
+            </strong>
+          </div>
+
+          <div class="info-item">
+            <span>Efectivo inicial</span>
+
+            <strong>
+              {{ shift.initialCash | number:'1.2-2' }}
+            </strong>
+          </div>
+
+          <div class="info-item">
+            <span>Efectivo final</span>
+
+            <strong>
+              {{ shift.finalCash | number:'1.2-2' }}
+            </strong>
+          </div>
+
+        </div>
+
+        <!-- PIE DEL TURNO -->
+        <div class="shift-card-footer">
+
+          <span>
+            Cerrado por: {{ shift.closedBy }}
+          </span>
+
+          <ion-button
+            fill="outline"
+            (click)="viewReport(shift)">
+            Ver reporte
+          </ion-button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- ERROR -->
+    <div
+      class="error-message"
+      *ngIf="reportError">
+
+      {{ reportError }}
+
+    </div>
+
+  </div>
+
+</ion-content>
+
+
+<!-- REPORTE -->
+
+<ion-modal
+  class="shift-report-modal"
+  [isOpen]="showReport"
+  (didDismiss)="closeReport()">
+
+  <ng-template>
+
+    <!-- HEADER DEL REPORTE -->
+    <ion-header>
+      <ion-toolbar>
+
+        <ion-title>
+          Reporte de turno
+        </ion-title>
+
+        <ion-buttons slot="end">
+          <ion-button
+            fill="clear"
+            (click)="closeReport()">
+            <ion-icon
+              name="close-outline"
+              slot="icon-only">
+            </ion-icon>
+          </ion-button>
+        </ion-buttons>
+
+      </ion-toolbar>
+    </ion-header>
+
+    <!-- CONTENIDO DEL REPORTE -->
+    <ion-content>
+
+      <div
+        class="report-container"
+        *ngIf="selectedReport">
+
+        <!-- INFORMACIÓN GENERAL -->
+
+        <section class="report-section">
+
+          <h2>Información del turno</h2>
+
+          <!-- GRID DE INFORMACIÓN DEL TURNO -->
+          <div class="report-info-grid">
+
+            <div>
+              <span>Turno</span>
+              <strong>
+                {{ selectedReport.shiftId }}
+              </strong>
+            </div>
+
+            <div>
+              <span>Apertura</span>
+              <strong>
+                {{ selectedReport.openedAt | date:'dd/MM/yyyy HH:mm' }}
+              </strong>
+            </div>
+
+            <div>
+              <span>Cierre</span>
+              <strong>
+                {{ selectedReport.closedAt | date:'dd/MM/yyyy HH:mm' }}
+              </strong>
+            </div>
+
+            <div>
+              <span>Abierto por</span>
+              <strong>
+                {{ selectedReport.openedBy }}
+              </strong>
+            </div>
+
+            <div>
+              <span>Cerrado por</span>
+              <strong>
+                {{ selectedReport.closedBy }}
+              </strong>
+            </div>
+
+          </div>
+
+        </section>
+
+
+        <!-- TICKETS -->
+
+        <section class="report-section">
+
+          <h2>Tickets</h2>
+
+          <!-- GRID DE RESUMEN DE TICKETS -->
+          <div class="summary-grid">
+
+            <div class="summary-card">
+              <span>Total</span>
+              <strong>
+                {{ selectedReport.summary.totalTickets }}
+              </strong>
+            </div>
+
+            <div class="summary-card">
+              <span>Pagados</span>
+              <strong>
+                {{ selectedReport.summary.paidTickets }}
+              </strong>
+            </div>
+
+            <div class="summary-card">
+              <span>Cancelados</span>
+              <strong>
+                {{ selectedReport.summary.cancelledTickets }}
+              </strong>
+            </div>
+
+            <div class="summary-card">
+              <span>Eliminados</span>
+              <strong>
+                {{ selectedReport.summary.deletedTickets }}
+              </strong>
+            </div>
+
+          </div>
+
+        </section>
+
+
+        <!-- VENTAS -->
+
+        <section class="report-section">
+
+          <h2>Ventas</h2>
+
+          <!-- TOTAL VENDIDO -->
+          <div class="sales-total">
+
+            <span>Total vendido</span>
+
+            <strong>
+              {{ selectedReport.summary.totalSales | number:'1.2-2' }}
+            </strong>
+
+          </div>
+
+          <!-- GRID DE RESUMEN DE VENTAS -->
+          <div class="summary-grid">
+
+            <div class="summary-card">
+              <span>Efectivo</span>
+              <strong>
+                {{ getPaymentTotal('cash') | number:'1.2-2' }}
+              </strong>
+            </div>
+
+            <div class="summary-card">
+              <span>Tarjeta</span>
+              <strong>
+                {{ getPaymentTotal('card') | number:'1.2-2' }}
+              </strong>
+            </div>
+
+            <div class="summary-card">
+              <span>Transferencia</span>
+              <strong>
+                {{ getPaymentTotal('transfer') | number:'1.2-2' }}
+              </strong>
+            </div>
+
+          </div>
+
+        </section>
+
+
+        <!-- CAJA -->
+
+        <section class="report-section">
+
+          <h2>Caja</h2>
+
+          <!-- RESUMEN DE CAJA -->
+          <div class="cash-summary">
+
+            <div>
+              <span>Efectivo inicial</span>
+              <strong>
+                {{ selectedReport.summary.initialCash | number:'1.2-2' }}
+              </strong>
+            </div>
+
+            <div>
+              <span>Efectivo esperado</span>
+              <strong>
+                {{ selectedReport.summary.expectedCash | number:'1.2-2' }}
+              </strong>
+            </div>
+
+            <div>
+              <span>Efectivo final</span>
+              <strong>
+                {{ selectedReport.summary.finalCash | number:'1.2-2' }}
+              </strong>
+            </div>
+
+            <div>
+              <span>Diferencia</span>
+              <strong>
+                {{ selectedReport.summary.cashDifference | number:'1.2-2' }}
+              </strong>
+            </div>
+
+          </div>
+
+        </section>
+
+
+        <!-- MOVIMIENTOS -->
+
+        <section class="report-section">
+
+          <h2>Movimientos de caja</h2>
+
+          <!-- LISTA DE MOVIMIENTOS -->
+          <div
+            class="movement-list"
+            *ngIf="selectedReport.cashMovements.length > 0">
+
+            <!-- FILA DE MOVIMIENTO -->
+            <div
+              class="movement-row"
+              *ngFor="let movement of selectedReport.cashMovements">
+
+              <!-- INFORMACIÓN DEL MOVIMIENTO -->
+              <div class="movement-main">
+
+                <strong>
+                  {{ getMovementTypeLabel(movement.type) }}
+                </strong>
+
+                <span *ngIf="movement.description">
+                  {{ movement.description }}
+                </span>
+
+              </div>
+
+              <!-- MONTO Y FECHA DEL MOVIMIENTO -->
+              <div class="movement-amount">
+
+                <strong>
+                  {{ getMovementSign(movement.type) }}
+                  {{ movement.amount | number:'1.2-2' }}
+                </strong>
+
+                <small>
+                  {{ movement.createdAt | date:'dd/MM/yyyy HH:mm' }}
+                </small>
+
+              </div>
+
+            </div>
+
+          </div>
+
+          <!-- MENSAJE DE SIN MOVIMIENTOS -->
+          <p
+            class="empty-movements"
+            *ngIf="selectedReport.cashMovements.length === 0">
+
+            No hay movimientos registrados.
+
+          </p>
+
+        </section>
+
+      </div>
+
+    </ion-content>
+
+  </ng-template>
+
+</ion-modal>

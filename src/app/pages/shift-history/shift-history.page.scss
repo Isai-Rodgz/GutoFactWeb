@@ -1,0 +1,663 @@
+
+//estilos de la página de historial de turnos
+
+ion-content {
+  --background: var(--ion-color-primario1);
+}
+
+
+//estilos de la cabecera de la página
+
+ion-header {
+  ion-toolbar {
+    --background: var(--ion-color-primario2);
+    --color: var(--ion-color-secundario-main);
+    border-bottom: 1px solid var(--ion-color-secundario3);
+  }
+
+  ion-title {
+    color: var(--ion-color-secundario-main);
+    font-size: 18px;
+    font-weight: 600;
+  }
+
+  ion-button {
+    --color: var(--ion-color-primario-main);
+  }
+}
+
+
+//estilos del contenedor principal
+
+.page-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px 18px 30px;
+  box-sizing: border-box;
+}
+
+
+//estilos del encabezado de la página
+
+.page-header {
+  padding: 24px 18px;
+  background: var(--ion-color-primario2);
+  border-bottom: 1px solid var(--ion-color-secundario3);
+  box-sizing: border-box;
+}
+
+.page-header h1 {
+  margin: 0 0 5px;
+  color: var(--ion-color-secundario-main);
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.page-header p {
+  margin: 0;
+  color: var(--ion-color-secundario4);
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+
+//estilos del estado vacío
+
+.empty-state {
+  min-height: 60vh;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+  padding: 40px 20px;
+  box-sizing: border-box;
+}
+
+.empty-state > ion-icon {
+  font-size: 70px;
+  margin-bottom: 18px;
+  color: var(--ion-color-primario-main);
+}
+
+.empty-state h2 {
+  margin: 0 0 8px;
+  color: var(--ion-color-secundario-main);
+  font-size: 21px;
+  font-weight: 600;
+}
+
+.empty-state p {
+  max-width: 350px;
+  margin: 0;
+  color: var(--ion-color-secundario4);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+
+//estilos de la lista de turnos
+
+.shift-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+
+//estilos de cada tarjeta de turno
+
+.shift-card {
+  padding: 20px;
+  background: var(--ion-color-primario2);
+  border: 1px solid var(--ion-color-primario3);
+  border-radius: 10px;
+  box-sizing: border-box;
+}
+
+
+//estilos de la cabecera de cada turno
+
+.shift-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 15px;
+
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--ion-color-primario3);
+}
+
+.shift-card-header h2 {
+  margin: 5px 0 0;
+  color: var(--ion-color-secundario-main);
+  font-size: 18px;
+  font-weight: 600;
+  word-break: break-all;
+}
+
+
+//estilos de la etiqueta del turno
+
+.shift-label {
+  display: block;
+  color: var(--ion-color-secundario4);
+  font-size: 12px;
+}
+
+
+//estilos del estado del turno
+
+.status-badge {
+  padding: 5px 9px;
+  border-radius: 6px;
+
+  background: var(--ion-color-primario5);
+  color: var(--ion-color-primario-main);
+
+  font-size: 12px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+
+//estilos de la información del turno
+
+.shift-info-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+
+  margin-top: 16px;
+}
+
+
+//estilos de cada información del turno
+
+.info-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  padding: 14px;
+
+  background: var(--ion-color-primario2);
+  border: 1px solid var(--ion-color-primario3);
+  border-radius: 8px;
+}
+
+.info-item span {
+  color: var(--ion-color-secundario4);
+  font-size: 12px;
+}
+
+.info-item strong {
+  color: var(--ion-color-secundario-main);
+  font-size: 15px;
+  font-weight: 600;
+}
+
+
+//estilos del pie de cada turno
+
+.shift-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+
+  margin-top: 16px;
+  padding-top: 16px;
+
+  border-top: 1px solid var(--ion-color-primario3);
+}
+
+.shift-card-footer span {
+  color: var(--ion-color-secundario4);
+  font-size: 13px;
+}
+
+.shift-card-footer ion-button {
+  --color: var(--ion-color-primario-main);
+  --border-color: var(--ion-color-primario-main);
+  --border-radius: 8px;
+
+  min-height: 43px;
+  margin: 0;
+
+  text-transform: none;
+}
+
+
+//estilos del mensaje de error
+
+.error-message {
+  margin-top: 16px;
+  padding: 12px 16px;
+
+  background: var(--ion-color-primario2);
+  border: 1px solid var(--ion-color-danger);
+  border-radius: 8px;
+
+  color: var(--ion-color-danger);
+  font-size: 14px;
+}
+
+
+//estilos del modal del reporte
+
+.shift-report-modal {
+  --width: 900px;
+  --max-width: 95%;
+  --height: 90%;
+  --max-height: 95%;
+  --border-radius: 10px;
+}
+
+
+//estilos de la cabecera del modal
+
+.shift-report-modal ion-header ion-toolbar {
+  --background: var(--ion-color-primario2);
+  --color: var(--ion-color-secundario-main);
+
+  border-bottom: 1px solid var(--ion-color-secundario3);
+}
+
+.shift-report-modal ion-title {
+  color: var(--ion-color-secundario-main);
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.shift-report-modal ion-button {
+  --color: var(--ion-color-primario-main);
+}
+
+
+//estilos del contenido del reporte
+
+.shift-report-modal ion-content {
+  --background: var(--ion-color-primario1);
+}
+
+
+//estilos del contenedor principal del reporte
+
+.report-container {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+
+  padding: 24px 20px 30px;
+  box-sizing: border-box;
+}
+
+
+//estilos de cada sección del reporte
+
+.report-section {
+  margin-bottom: 16px;
+  padding: 20px;
+
+  background: var(--ion-color-primario2);
+  border: 1px solid var(--ion-color-primario3);
+  border-radius: 10px;
+  box-sizing: border-box;
+}
+
+.report-section h2 {
+  margin: 0 0 18px;
+
+  color: var(--ion-color-secundario-main);
+  font-size: 19px;
+  font-weight: 600;
+}
+
+
+//estilos de la información general del reporte
+
+.report-info-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.report-info-grid > div {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  padding: 14px;
+
+  background: var(--ion-color-primario2);
+  border: 1px solid var(--ion-color-primario3);
+  border-radius: 8px;
+}
+
+.report-info-grid span {
+  color: var(--ion-color-secundario4);
+  font-size: 12px;
+}
+
+.report-info-grid strong {
+  color: var(--ion-color-secundario-main);
+  font-size: 14px;
+  font-weight: 600;
+  word-break: break-word;
+}
+
+
+//estilos del contenedor de los resúmenes
+
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+
+//estilos de las tarjetas de resumen
+
+.summary-card {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  padding: 16px;
+
+  background: var(--ion-color-primario2);
+  border: 1px solid var(--ion-color-primario3);
+  border-radius: 10px;
+}
+
+.summary-card span {
+  color: var(--ion-color-secundario4);
+  font-size: 13px;
+}
+
+.summary-card strong {
+  color: var(--ion-color-secundario-main);
+  font-size: 20px;
+  font-weight: 600;
+}
+
+
+//estilos del total vendido
+
+.sales-total {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+
+  margin-bottom: 12px;
+  padding: 16px;
+
+  background: var(--ion-color-primario5);
+  border-radius: 8px;
+}
+
+.sales-total span {
+  color: var(--ion-color-secundario4);
+  font-size: 13px;
+}
+
+.sales-total strong {
+  color: var(--ion-color-primario-main);
+  font-size: 22px;
+  font-weight: 600;
+}
+
+
+//estilos del resumen de caja
+
+.cash-summary {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.cash-summary > div {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  padding: 16px;
+
+  background: var(--ion-color-primario2);
+  border: 1px solid var(--ion-color-primario3);
+  border-radius: 10px;
+}
+
+.cash-summary span {
+  color: var(--ion-color-secundario4);
+  font-size: 13px;
+}
+
+.cash-summary strong {
+  color: var(--ion-color-secundario-main);
+  font-size: 18px;
+  font-weight: 600;
+}
+
+
+//estilos de la lista de movimientos
+
+.movement-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+
+//estilos de cada movimiento
+
+.movement-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+
+  padding: 14px;
+
+  background: var(--ion-color-primario2);
+  border: 1px solid var(--ion-color-primario3);
+  border-radius: 10px;
+}
+
+
+//estilos de la información principal del movimiento
+
+.movement-main {
+  min-width: 0;
+  flex: 1;
+
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.movement-main strong {
+  color: var(--ion-color-secundario-main);
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.movement-main span {
+  color: var(--ion-color-secundario4);
+  font-size: 13px;
+  word-break: break-word;
+}
+
+
+//estilos del monto y fecha del movimiento
+
+.movement-amount {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+
+  flex-shrink: 0;
+}
+
+.movement-amount strong {
+  color: var(--ion-color-primario-main);
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.movement-amount small {
+  color: var(--ion-color-secundario4);
+  font-size: 11px;
+}
+
+
+//estilos del mensaje cuando no hay movimientos
+
+.empty-movements {
+  margin: 0;
+  padding: 35px 20px;
+
+  color: var(--ion-color-secundario4);
+  text-align: center;
+  font-size: 14px;
+
+  border: 1px dashed var(--ion-color-primario3);
+  border-radius: 8px;
+}
+
+
+//Media queries de responsividad
+
+@media (max-width: 900px) {
+
+  //estilos de la información del turno
+  .shift-info-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  //estilos de la información general del reporte
+  .report-info-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  //estilos de las tarjetas de resumen
+  .summary-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  //estilos del resumen de caja
+  .cash-summary {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+
+//responsive en móvil
+
+@media (max-width: 700px) {
+
+  //estilos del encabezado de la página
+  .page-header {
+    padding: 20px 16px;
+  }
+
+  //estilos del contenedor principal
+  .page-container {
+    padding: 16px;
+  }
+
+  //estilos de la tarjeta de turno
+  .shift-card {
+    padding: 16px;
+  }
+
+  //estilos de la cabecera del turno
+  .shift-card-header {
+    flex-direction: column;
+  }
+
+  //estilos del pie del turno
+  .shift-card-footer {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  //estilos del botón del pie
+  .shift-card-footer ion-button {
+    width: 100%;
+  }
+
+  //estilos del contenedor del reporte
+  .report-container {
+    padding: 16px;
+  }
+
+  //estilos de las secciones del reporte
+  .report-section {
+    padding: 16px;
+  }
+
+  //estilos de la información general
+  .report-info-grid {
+    grid-template-columns: 1fr;
+  }
+
+  //estilos del resumen de caja
+  .cash-summary {
+    grid-template-columns: 1fr;
+  }
+
+  //estilos de los movimientos
+  .movement-row {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  //estilos del monto del movimiento
+  .movement-amount {
+    align-items: flex-start;
+  }
+}
+
+
+//responsive móvil pequeño
+
+@media (max-width: 420px) {
+
+  //estilos del contenedor principal
+  .page-container {
+    padding: 12px;
+  }
+
+  //estilos del encabezado
+  .page-header {
+    padding: 18px 14px;
+  }
+
+  //estilos de la tarjeta de turno
+  .shift-card {
+    padding: 14px;
+  }
+
+  //estilos del reporte
+  .report-container {
+    padding: 12px;
+  }
+
+  //estilos de las secciones
+  .report-section {
+    padding: 14px;
+  }
+
+  //estilos de las tarjetas de resumen
+  .summary-card,
+  .cash-summary > div {
+    padding: 14px;
+  }
+}

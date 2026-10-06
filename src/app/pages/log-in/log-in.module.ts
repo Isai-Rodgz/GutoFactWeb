@@ -1,6 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
+import { CustomInputComponent } from 'src/app/sharet/component/custom-input/custom-input.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
@@ -14,8 +17,11 @@ import { LogInPage } from './log-in.page';
     FormsModule,
     IonicModule,
     LogInPageRoutingModule,
-    LogInPage
+    RouterLink,
+    CustomInputComponent,
+    ReactiveFormsModule
+    
   ],
-  declarations: []
+  declarations: [LogInPage]
 })
 export class LogInPageModule {}

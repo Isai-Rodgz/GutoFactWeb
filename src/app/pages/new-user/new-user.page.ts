@@ -1,9 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { IonicModule } from '@ionic/angular';
-import { CustomInputComponent } from 'src/app/sharet/component/custom-input/custom-input.component';
 import { AuthService } from 'src/app/services/auth.service';
 import { ToastService } from 'src/app/services/toast.service';
 import { RegisterRequest } from 'src/app/models/register-request.model';
@@ -12,7 +9,7 @@ import { RegisterRequest } from 'src/app/models/register-request.model';
   selector: 'app-new-user',
   templateUrl: './new-user.page.html',
   styleUrls: ['./new-user.page.scss'],
-  imports: [IonicModule,RouterLink, CustomInputComponent, ReactiveFormsModule]
+  standalone: false
 })
 export class NewUserPage implements OnInit {
 

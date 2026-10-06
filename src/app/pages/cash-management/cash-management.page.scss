@@ -1,0 +1,463 @@
+
+//estilos de la página de gestión de caja y turnos
+ion-content {
+  --background: var(--ion-color-primario1);
+}
+
+//estilos de la cabecera de la página
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 24px 18px;
+  background: var(--ion-color-primario2);
+  border-bottom: 1px solid var(--ion-color-secundario3);
+  box-sizing: border-box;
+}
+
+//estilos del título y subtítulo de la cabecera
+.page-header h1 {
+  margin: 0 0 5px;
+  color: var(--ion-color-secundario-main);
+  font-size: 24px;
+  font-weight: 600;
+}
+
+//estilos del párrafo de la cabecera
+.page-header p {
+  margin: 0;
+  color: var(--ion-color-secundario4);
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+//estilos de los botones primarios y secundarios
+.primary-button {
+  --background: var(--ion-color-primario-main);
+  --background-activated: var(--ion-color-primario6);
+  --color: var(--ion-color-primario-main-contrast);
+  --border-radius: 8px;
+  min-height: 43px;
+  margin: 0;
+  text-transform: none;
+  flex-shrink: 0;
+}
+
+//estilos del botón secundario
+.secondary-button {
+  --color: var(--ion-color-primario-main);
+  --border-color: var(--ion-color-primario-main);
+  --border-radius: 8px;
+  min-height: 43px;
+  margin: 0;
+  text-transform: none;
+}
+
+//estilos del estado vacío de la página
+.empty-state {
+  min-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 40px 20px;
+  box-sizing: border-box;
+}
+
+//estilos del icono del estado vacío
+.empty-state > ion-icon {
+  font-size: 70px;
+  margin-bottom: 18px;
+  color: var(--ion-color-primario-main);
+}
+
+//estilos del título del estado vacío
+.empty-state h2 {
+  margin: 0 0 8px;
+  color: var(--ion-color-secundario-main);
+  font-size: 21px;
+  font-weight: 600;
+}
+
+//estilos del párrafo del estado vacío
+.empty-state p {
+  max-width: 350px;
+  margin: 0 0 22px;
+  color: var(--ion-color-secundario4);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+//estilos del contenedor de la sección de turnos
+.shift-container {
+  padding: 20px 18px 30px;
+  box-sizing: border-box;
+}
+
+//estilos de la cabecera del turno
+.shift-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 15px;
+  padding: 20px;
+  background: var(--ion-color-primario2);
+  border: 1px solid var(--ion-color-primario3);
+  border-radius: 10px;
+}
+
+//estilos de la etiqueta de sección
+.section-label {
+  color: var(--ion-color-secundario4);
+  font-size: 12px;
+}
+
+//estilos del título y subtítulo de la cabecera del turno
+.shift-header h2 {
+  margin: 5px 0;
+  color: var(--ion-color-secundario-main);
+  font-size: 18px;
+  font-weight: 600;
+}
+
+//estilos del párrafo de la cabecera del turno
+.shift-header p {
+  margin: 0;
+  color: var(--ion-color-secundario4);
+  font-size: 13px;
+}
+
+//estilos del estado del turno
+.shift-status {
+  padding: 5px 9px;
+  border-radius: 6px;
+  background: var(--ion-color-primario5);
+  color: var(--ion-color-primario-main);
+  font-size: 12px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+//estilos del contenedor de los resúmenes
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 16px;
+}
+
+//estilos de las tarjetas de resumen
+.summary-card {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 16px;
+  background: var(--ion-color-primario2);
+  border: 1px solid var(--ion-color-primario3);
+  border-radius: 10px;
+}
+
+//estilos del texto de las tarjetas de resumen
+.summary-card span {
+  color: var(--ion-color-secundario4);
+  font-size: 13px;
+}
+
+//estilos del valor de las tarjetas de resumen
+.summary-card strong {
+  color: var(--ion-color-secundario-main);
+  font-size: 20px;
+  font-weight: 600;
+}
+
+//estilos de las tarjetas de resumen destacadas
+.summary-card.highlight {
+  border-color: var(--ion-color-primario-main);
+}
+
+//estilos del valor de las tarjetas de resumen destacadas
+.summary-card.highlight strong {
+  color: var(--ion-color-primario-main);
+}
+
+//estilos de la sección de acciones
+.action-section {
+  display: flex;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+//estilos de los botones de la sección de acciones
+.action-section ion-button {
+  flex: 1;
+}
+
+//estilos de la cabecera de la sección
+.section-header {
+  margin-top: 28px;
+  margin-bottom: 12px;
+}
+
+//estilos del título de la cabecera de la sección
+.section-header h2 {
+  margin: 0 0 5px;
+  color: var(--ion-color-secundario-main);
+  font-size: 19px;
+  font-weight: 600;
+}
+
+//estilos del párrafo de la cabecera de la sección
+.section-header p {
+  margin: 0;
+  color: var(--ion-color-secundario4);
+  font-size: 13px;
+}
+
+//estilos del contenedor de los movimientos
+.movements-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+//estilos de las tarjetas de movimiento
+.movement-card {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 14px;
+  background: var(--ion-color-primario2);
+  border: 1px solid var(--ion-color-primario3);
+  border-radius: 10px;
+}
+
+//estilos del icono de movimiento
+.movement-icon {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border-radius: 8px;
+  background: var(--ion-color-primario5);
+}
+
+//estilos del icono de movimiento
+.movement-icon ion-icon {
+  color: var(--ion-color-primario-main);
+  font-size: 20px;
+}
+
+//estilos de la información del movimiento
+.movement-info {
+  min-width: 0;
+  flex: 1;
+}
+
+//estilos del título del movimiento
+.movement-info h3 {
+  margin: 0 0 4px;
+  color: var(--ion-color-secundario-main);
+  font-size: 15px;
+  font-weight: 600;
+}
+
+//estilos del párrafo del movimiento
+.movement-info p {
+  margin: 0 0 4px;
+  color: var(--ion-color-secundario4);
+  font-size: 13px;
+}
+
+//estilos del span del movimiento
+.movement-info span {
+  color: var(--ion-color-secundario4);
+  font-size: 11px;
+}
+
+//estilos del valor del movimiento
+.movement-card > strong {
+  flex-shrink: 0;
+  font-size: 17px;
+}
+
+//estilos del valor de los movimientos entrantes
+.movement-in {
+  color: var(--ion-color-primario-main);
+}
+
+//estilos del valor de los movimientos salientes
+.movement-out {
+  color: var(--ion-color-danger);
+}
+
+//estilos del estado vacío de los movimientos
+.empty-movements {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 35px 20px;
+  color: var(--ion-color-secundario4);
+  text-align: center;
+}
+
+//estilos del icono del estado vacío de los movimientos
+.empty-movements ion-icon {
+  color: var(--ion-color-primario-main);
+  font-size: 22px;
+}
+
+//estilos del párrafo del estado vacío de los movimientos
+.empty-movements p {
+  margin: 0;
+  font-size: 14px;
+}
+
+//estilos del modal de caja
+.cash-modal {
+  --width: 520px;
+  --max-width: 95%;
+  --height: 85%;
+  --max-height: 90%;
+  --border-radius: 10px;
+}
+
+//estilos del formulario del modal
+.modal-form {
+  padding: 24px 20px 30px;
+  box-sizing: border-box;
+}
+
+//estilos del título del formulario del modal
+.modal-form h2 {
+  margin: 0 0 7px;
+  color: var(--ion-color-secundario-main);
+  font-size: 21px;
+  font-weight: 600;
+}
+
+//estilos del párrafo del formulario del modal
+.modal-form > p {
+  margin: 0 0 20px;
+  color: var(--ion-color-secundario4);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+//estilos de los elementos del formulario del modal
+.modal-form ion-item {
+  --background: var(--ion-color-primario2);
+  --color: var(--ion-color-secundario-main);
+  --border-color: var(--ion-color-primario3);
+  --highlight-color-focused: var(--ion-color-primario-main);
+  margin-bottom: 12px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+//estilos de los labels de los elementos del formulario del modal
+.form-error {
+  margin: 8px 2px 16px !important;
+  color: var(--ion-color-danger) !important;
+  font-size: 14px !important;
+}
+
+//estilos de los botones del modal
+.modal-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 20px;
+}
+
+//estilos del primer botón del modal
+.modal-actions ion-button:first-child {
+  --background: var(--ion-color-primario-main);
+  --background-activated: var(--ion-color-primario6);
+  --color: var(--ion-color-primario-main-contrast);
+  --border-radius: 8px;
+  height: 44px;
+  text-transform: none;
+}
+
+//estilos del segundo botón del modal
+.modal-actions ion-button:last-child {
+  --color: var(--ion-color-primario-main);
+  --border-color: var(--ion-color-primario-main);
+  --border-radius: 8px;
+  height: 44px;
+  text-transform: none;
+}
+
+//estilos del contenedor de efectivo esperado
+.expected-cash {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  margin-top: 15px;
+  padding: 14px;
+  background: var(--ion-color-primario5);
+  border-radius: 8px;
+}
+
+//estilos del span de efectivo esperado
+.expected-cash span {
+  color: var(--ion-color-secundario4);
+  font-size: 13px;
+}
+
+//estilos del valor de efectivo esperado
+.expected-cash strong {
+  color: var(--ion-color-primario-main);
+  font-size: 18px;
+}
+
+//estilos del contenedor de efectivo contado
+@media (max-width: 700px) {
+
+  //estilos de la cabecera de la página
+  .page-header {
+    align-items: flex-start;
+    flex-direction: column;
+    padding: 20px 16px;
+  }
+
+  //estilos del título y subtítulo de la cabecera
+  .page-header .primary-button {
+    width: 100%;
+  }
+
+  //estilos del contenedor de la sección de turnos
+  .shift-container {
+    padding: 16px;
+  }
+
+  //estilos de la cabecera del turno
+  .summary-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  //estilos de la sección de acciones
+  .action-section {
+    flex-direction: column;
+  }
+}
+
+//estilos del contenedor de efectivo contado
+@media (max-width: 420px) {
+
+  //estilos de la cabecera del turno
+  .summary-grid {
+    grid-template-columns: 1fr;
+  }
+
+  //estilos de la cabecera del turno
+  .shift-header {
+    flex-direction: column;
+  }
+}

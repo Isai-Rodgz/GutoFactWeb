@@ -1,15 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { RouterLink } from '@angular/router';
-import { IonicModule } from '@ionic/angular';
-import { CustomInputComponent } from 'src/app/sharet/component/custom-input/custom-input.component';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 
 @Component({
   selector: 'app-reset-pass',
   templateUrl: './reset-pass.page.html',
   styleUrls: ['./reset-pass.page.scss'],
-  imports: [IonicModule,RouterLink, CustomInputComponent, ReactiveFormsModule]
+  standalone: false,
 })
 export class ResetPassPage implements OnInit {
 

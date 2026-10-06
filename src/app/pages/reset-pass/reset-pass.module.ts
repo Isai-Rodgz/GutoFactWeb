@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { RouterLink } from '@angular/router';
+import { CustomInputComponent } from 'src/app/sharet/component/custom-input/custom-input.component';
 
 import { IonicModule } from '@ionic/angular';
 
@@ -15,9 +17,11 @@ import { SharetModule } from 'src/app/sharet/sharet.module';
     FormsModule,
     IonicModule,
     ResetPassPageRoutingModule,
-    ResetPassPage,
-    SharetModule
+    SharetModule,
+    RouterLink,
+    CustomInputComponent,
+    ReactiveFormsModule
   ],
-  declarations: []
+  declarations: [ResetPassPage]
 })
 export class ResetPassPageModule {}

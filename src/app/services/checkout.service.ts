@@ -64,6 +64,17 @@ export class CheckoutService {
         );
         }
 
+        if (
+          (paymentMethod === 'card' || paymentMethod === 'transfer') &&
+          !paymentReference?.trim()
+        ) {
+          throw new Error(
+            paymentMethod === 'card'
+              ? 'Se requiere una referencia para este método de pago.'
+              : 'Se requiere una referencia para la transferencia.'
+          );
+        }
+
         const sale =
         this.saleService.add(
             ticket.shiftId,

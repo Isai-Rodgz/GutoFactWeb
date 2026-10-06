@@ -1,13 +1,89 @@
-<ion-content [fullscreen]="true" class="work-desk-content">
+<ion-content [fullscreen]="true" class="work-desk-content" id="work-desk-content">
 
   <!-- HEADER -->
   <div class="top-header">
 
     <ion-button
       fill="clear"
-      class="header-button">
+      class="header-button"
+      (click)="openMenu()">
+
       <ion-icon name="menu-outline"></ion-icon>
+
     </ion-button>
+
+    <!-- tickets abiertos -->
+    <section class="open-tickets-section" *ngIf="openTickets.length > 0">
+      <div class="section-header">
+        <h2>Tickets abiertos</h2>
+
+        <ion-button
+          class="new-ticket-button"
+          fill="outline"
+          (click)="createTicket()"
+        >
+          <ion-icon name="add-outline" slot="start"></ion-icon>
+          Nuevo ticket
+        </ion-button>
+      </div>
+
+      <div class="open-tickets-list">
+        <button
+          type="button"
+          class="ticket-card"
+          *ngFor="let ticket of openTickets"
+          [class.selected]="currentTicket?.id === ticket.id"
+          (click)="selectTicket(ticket)"
+        >
+          <span class="ticket-number">
+            Ticket #{{ ticket.number }}
+          </span>
+
+          <span class="ticket-status">
+            Abierto
+          </span>
+        </button>
+      </div>
+
+      <div class="ticket-management-actions" *ngIf="currentTicket">
+
+        <ion-button
+          expand="block"
+          fill="outline"
+          class="cancel-ticket-button"
+          (click)="openTicketActionModal('cancel')">
+          <ion-icon name="close-circle-outline" slot="start"></ion-icon>
+          Cancelar ticket
+        </ion-button>
+
+        <ion-button
+          expand="block"
+          fill="outline"
+          class="delete-ticket-button"
+          (click)="openTicketActionModal('delete')">
+          <ion-icon name="trash-outline" slot="start"></ion-icon>
+          Eliminar ticket
+        </ion-button>
+
+      </div>
+
+    </section>
+
+    <!-- crear ticket cuando no existen tickets abiertos -->
+    <div
+      class="no-open-tickets"
+      *ngIf="openTickets.length === 0 && currentShift"
+    >
+      <p>No hay tickets abiertos.</p>
+
+      <ion-button
+        class="new-ticket-button"
+        (click)="createTicket()"
+      >
+        <ion-icon name="add-outline" slot="start"></ion-icon>
+        Nuevo ticket
+      </ion-button>
+    </div>
 
     <div class="header-title">
       <span>Ticket</span>
@@ -80,20 +156,40 @@
       </span>
 
       <strong class="summary-value">
-        0
+        {{ currentTicket ? 1 : 0 }}
       </strong>
 
     </div>
 
-    <div class="summary-item">
+    <div class="summary-item-total">
 
-      <span class="summary-label">
+      <!-- Muestra el total del ticket actual -->
+      <div class="summary-total">
+
+        <span class="summary-label">Total</span>
+
+        <strong class="summary-value">
+          {{ ticketTotal | number:'1.2-2' }}
+        </strong>
+
+      </div>
+
+      <!-- Botón para abrir el modal de checkout, deshabilitado si no hay ticket o items -->
+      <ion-button
+        id="checkout-button-summary"
+        expand="block"
+        class="checkout-button"
+        [disabled]="!currentTicket || ticketItems.length === 0"
+        (click)="openCheckout()">
+
+        <ion-icon
+          name="card-outline"
+          slot="start">
+        </ion-icon>
+
         Cobrar
-      </span>
 
-      <strong class="summary-value">
-        RD$0.00
-      </strong>
+      </ion-button>
 
     </div>
 
@@ -105,46 +201,576 @@
 
     <div class="category-select">
 
-      <span>Todos los artículos</span>
+      <!-- Selector de categoría para filtrar productos -->
+      <ion-select
+        interface="popover"
+        [value]="selectedCategoryId"
+        (ionChange)="selectCategory($event.detail.value)"
+        placeholder="Seleccionar categoría">
+
+        <ion-select-option [value]="null">
+          Todos los artículos
+        </ion-select-option>
+
+        <ion-select-option
+          *ngFor="let category of categories"
+          [value]="category.id">
+
+          {{ category.name }}
+
+        </ion-select-option>
+
+      </ion-select>
+
+    </div>
+
+    <!-- Boton de búsqueda para mostrar u ocultar el campo de búsqueda -->
+    <div
+      class="search-button"
+      (click)="showSearch = !showSearch">
 
       <ion-icon
-        name="chevron-down-outline">
+        [name]="showSearch
+          ? 'close-outline'
+          : 'search-outline'">
       </ion-icon>
 
     </div>
 
-    <div class="search-button">
+  </div>
+
+    <!-- Campo de búsqueda -->
+    <div
+      class="search-bar-container"
+      *ngIf="showSearch">
+
+      <ion-searchbar
+        [(ngModel)]="searchTerm"
+        (ionInput)="onSearchChange()"
+        placeholder="Buscar producto..."
+        [debounce]="150">
+      </ion-searchbar>
+
+    </div>
+
+
+  <!-- Lista de productos filtrados -->
+  <div class="products-container">
+
+    <div
+      class="products-empty"
+      *ngIf="filteredProducts.length === 0">
 
       <ion-icon
         name="search-outline">
       </ion-icon>
 
+      <p>
+        Selecciona una categoría o busca un producto
+      </p>
+
+    </div>
+
+
+    <div
+      class="products-grid"
+      *ngIf="filteredProducts.length > 0">
+
+      <div
+        class="product-card"
+        *ngFor="let product of filteredProducts">
+
+        <div class="product-image">
+
+          <img
+            *ngIf="product.imageUrl"
+            [src]="product.imageUrl"
+            [alt]="product.name">
+
+          <ion-icon
+            *ngIf="!product.imageUrl"
+            name="image-outline">
+          </ion-icon>
+
+        </div>
+
+        <div class="product-info">
+
+          <h3>
+            {{ product.name }}
+          </h3>
+
+          <span class="product-price">
+            RD${{ product.price | number:'1.2-2' }}
+          </span>
+
+        </div>
+
+      </div>
+
     </div>
 
   </div>
 
 
-  <!-- CONTENIDO -->
-  <div class="empty-state">
+<!-- CONTENIDO --> <!-- Abrir turno -->
+<div class="empty-state" *ngIf="!currentShift">
 
-    <ion-icon
-      class="cash-register-icon"
-      src="assets/icon/cash-register.svg">
-    </ion-icon>
+  <ion-icon
+    class="cash-register-icon"
+    src="assets/icon/cash-register.svg">
+  </ion-icon>
 
-    <h2>
-      El turno está cerrado
-    </h2>
+  <h2>
+    El turno está cerrado
+  </h2>
 
-    <p>
-      Abre el turno para realizar ventas
-    </p>
+  <p>
+    Abre el turno para realizar ventas
+  </p>
 
-    <ion-button
-      class="open-shift-button">
-      Abrir el turno
-    </ion-button>
+<ion-button
+  class="open-shift-button"
+  (click)="openShiftModal()">
+  Abrir el turno
+</ion-button>
 
-  </div>
+</div>
+
+<!-- Aparece al abrir un turno -->
+<ion-modal
+  [isOpen]="showOpenShiftModal"
+  (didDismiss)="closeOpenShiftModal()">
+
+  <ng-template>
+
+    <ion-header>
+      <ion-toolbar>
+
+        <ion-title>
+          Abrir turno
+        </ion-title>
+
+        <ion-buttons slot="end">
+
+          <ion-button
+            (click)="closeOpenShiftModal()">
+
+            Cerrar
+
+          </ion-button>
+
+        </ion-buttons>
+
+      </ion-toolbar>
+    </ion-header>
+
+
+    <ion-content class="ion-padding">
+
+      <div class="open-shift-form">
+
+        <h2>
+          Efectivo inicial
+        </h2>
+
+        <p>
+          Ingresa el efectivo disponible en caja
+          al comenzar el turno.
+        </p>
+
+
+        <ion-item>
+
+          <ion-input
+            label="Efectivo inicial"
+            labelPlacement="floating"
+            type="number"
+            min="0"
+            [(ngModel)]="initialCash">
+          </ion-input>
+
+        </ion-item>
+
+
+        <p
+          *ngIf="shiftError"
+          class="shift-error">
+
+          {{ shiftError }}
+
+        </p>
+
+
+        <ion-button
+          expand="block"
+          class="open-shift-confirm-button"
+          (click)="openShift()">
+
+          Abrir turno
+
+        </ion-button>
+
+
+        <ion-button
+          expand="block"
+          fill="clear"
+          (click)="closeOpenShiftModal()">
+
+          Cancelar
+
+        </ion-button>
+
+      </div>
+
+    </ion-content>
+
+  </ng-template>
+
+</ion-modal>
+
 
 </ion-content>
+
+
+<!-- MENU LATERAL -->
+<ion-menu
+  side="start"
+  contentId="work-desk-content">
+
+  <ion-header>
+
+    <ion-toolbar>
+
+      <ion-title>
+        Menú
+      </ion-title>
+
+    </ion-toolbar>
+
+  </ion-header>
+
+
+  <ion-content>
+
+    <ion-list>
+
+      <!-- Opción de menú para ir al punto de venta -->
+      <ion-item
+        button
+        (click)="goToWorkDesk()">
+
+        <ion-icon
+          slot="start"
+          name="cart-outline">
+        </ion-icon>
+
+        <ion-label>
+          Punto de venta
+        </ion-label>
+
+      </ion-item>
+
+
+      <!-- Opción de menú para ir a la gestión de categorías -->
+      <ion-item
+        button
+        (click)="goToCategories()">
+
+        <ion-icon
+          slot="start"
+          name="pricetags-outline">
+        </ion-icon>
+
+        <ion-label>
+          Categorías
+        </ion-label>
+
+      </ion-item>
+
+
+      <!-- Opción de menú para ir a la gestión de productos -->
+      <ion-item
+        button
+        (click)="goToProducts()">
+
+        <ion-icon
+          slot="start"
+          name="cube-outline">
+        </ion-icon>
+
+        <ion-label>
+          Productos
+        </ion-label>
+
+      </ion-item>
+
+
+      <!-- Opción de menú para ir a la gestión de inventario -->
+      <ion-item
+        button
+        (click)="goToInventory()">
+
+        <ion-icon
+          slot="start"
+          name="layers-outline">
+        </ion-icon>
+
+        <ion-label>
+          Inventario
+        </ion-label>
+
+      </ion-item>
+
+
+      <!-- Opción de menú para ir a la gestión de caja y turnos -->
+      <ion-item
+        button
+        (click)="goToCashManagement()">
+
+        <ion-icon
+          slot="start"
+          name="cash-outline">
+        </ion-icon>
+
+        <ion-label>
+          Caja / Turnos
+        </ion-label>
+
+      </ion-item>
+
+    </ion-list>
+
+  </ion-content>
+
+</ion-menu>
+
+<!-- MODAL DE COBRO -->
+<ion-modal
+  class="checkout-modal"
+  [isOpen]="showCheckoutModal"
+  (didDismiss)="closeCheckout()">
+
+  <ng-template>
+
+    <ion-header>
+      <ion-toolbar>
+
+        <ion-title>
+          Cobrar ticket
+        </ion-title>
+
+        <ion-buttons slot="end">
+
+          <!-- Botón para cerrar el modal de cobro -->
+          <ion-button
+            fill="clear"
+            (click)="closeCheckout()">
+
+            <ion-icon
+              name="close-outline"
+              slot="icon-only">
+            </ion-icon>
+
+          </ion-button>
+
+        </ion-buttons>
+
+      </ion-toolbar>
+    </ion-header>
+
+    <ion-content>
+
+      <div class="checkout-container">
+
+        <!-- Muestra el total a pagar del ticket -->
+        <div class="checkout-total">
+
+          <span>Total a pagar</span>
+
+          <strong>
+            {{ ticketTotal | number:'1.2-2' }}
+          </strong>
+
+        </div>
+
+
+        <div class="payment-section">
+
+          <h2>
+            Método de pago
+          </h2>
+
+          <!-- Botones para seleccionar el método de pago -->
+          <div class="payment-options">
+
+            <button
+              type="button"
+              class="payment-option"
+              [class.selected]="paymentMethod === 'cash'"
+              (click)="selectPaymentMethod('cash')">
+
+              <ion-icon name="cash-outline"></ion-icon>
+
+              <span>
+                Efectivo
+              </span>
+
+            </button>
+
+
+            <button
+              type="button"
+              class="payment-option"
+              [class.selected]="paymentMethod === 'card'"
+              (click)="selectPaymentMethod('card')">
+
+              <ion-icon name="card-outline"></ion-icon>
+
+              <span>
+                Tarjeta
+              </span>
+
+            </button>
+
+
+            <button
+              type="button"
+              class="payment-option"
+              [class.selected]="paymentMethod === 'transfer'"
+              (click)="selectPaymentMethod('transfer')">
+
+              <ion-icon name="swap-horizontal-outline"></ion-icon>
+
+              <span>
+                Transferencia
+              </span>
+
+            </button>
+
+          </div>
+
+          <div
+            class="payment-reference"
+            *ngIf="paymentMethod === 'card'">
+
+            <ion-item lines="none">
+
+              <ion-label position="stacked">
+                Referencia del pago
+              </ion-label>
+
+              <ion-input
+                type="text"
+                [(ngModel)]="paymentReference"
+                placeholder="Ej. CARD-12345">
+              </ion-input>
+
+            </ion-item>
+
+          </div>
+
+        </div>
+
+
+        <!-- Muestra un mensaje de error si ocurre algún problema durante el proceso de cobro -->
+        <div
+          class="checkout-error"
+          *ngIf="checkoutError">
+
+          {{ checkoutError }}
+
+        </div>
+
+
+        <!-- Botones de acción para cancelar o confirmar el cobro -->
+        <div class="checkout-actions">
+
+          <ion-button
+            fill="outline"
+            class="secondary-button"
+            (click)="closeCheckout()">
+
+            Cancelar
+
+          </ion-button>
+
+          <ion-button
+            class="primary-button"
+            (click)="confirmCheckout()">
+
+            Confirmar pago
+
+          </ion-button>
+
+        </div>
+
+      </div>
+
+    </ion-content>
+
+  </ng-template>
+
+</ion-modal>
+
+
+<!--Modal de cancelar o eliminar ticket-->
+<ion-modal
+  class="ticket-action-modal"
+  [isOpen]="showTicketActionModal"
+  (didDismiss)="closeTicketActionModal()">
+
+  <ion-content>
+
+    <div class="ticket-action-form">
+
+      <h2>
+        {{ ticketAction === 'cancel'
+          ? 'Cancelar ticket'
+          : 'Eliminar ticket' }}
+      </h2>
+
+      <p>
+        {{ ticketAction === 'cancel'
+          ? '¿Está seguro de que desea cancelar este ticket?'
+          : '¿Está seguro de que desea eliminar este ticket?' }}
+      </p>
+
+      <ion-item lines="none">
+        <ion-label position="stacked">
+          Razón (opcional)
+        </ion-label>
+
+        <ion-textarea
+          [(ngModel)]="ticketActionReason"
+          placeholder="Escriba una razón..."
+          autoGrow="true">
+        </ion-textarea>
+      </ion-item>
+
+      <div class="ticket-action-modal-buttons">
+
+        <ion-button
+          expand="block"
+          fill="outline"
+          class="secondary-button"
+          (click)="closeTicketActionModal()">
+          Volver
+        </ion-button>
+
+        <ion-button
+          expand="block"
+          class="danger-action-button"
+          (click)="confirmTicketAction()">
+          {{ ticketAction === 'cancel'
+            ? 'Confirmar cancelación'
+            : 'Confirmar eliminación' }}
+        </ion-button>
+
+      </div>
+
+    </div>
+
+  </ion-content>
+
+</ion-modal>

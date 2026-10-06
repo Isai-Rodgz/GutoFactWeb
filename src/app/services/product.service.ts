@@ -75,7 +75,8 @@ export class ProductService {
         stock: number,
         createdBy: string,
         description?: string,
-        categoryId?: string): Product {
+        categoryId?: string,
+        imageUrl?: string): Product {
 
         if (!name.trim()) {
         throw new Error(
@@ -114,6 +115,8 @@ export class ProductService {
             description: description?.trim(),
 
             categoryId,
+
+            imageUrl,
 
             price,
 
@@ -154,6 +157,7 @@ export class ProductService {
     name?: string;
     description?: string;
     categoryId?: string;
+    imageUrl?: string;
     price?: number;
     cost?: number;
     isActive?: boolean;
@@ -220,6 +224,11 @@ export class ProductService {
       changes.categoryId !== undefined
         ? changes.categoryId
         : product.categoryId,
+
+    imageUrl:
+      changes.imageUrl !== undefined
+        ? changes.imageUrl
+        : product.imageUrl,
 
     price:
       changes.price !== undefined

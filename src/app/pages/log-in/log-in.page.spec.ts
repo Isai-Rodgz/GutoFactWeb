@@ -12,8 +12,10 @@ describe('LogInPage', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
-        LogInPage,
         IonicModule.forRoot()
+      ],
+      declarations: [
+        LogInPage
       ],
       providers: [
         AuthService,

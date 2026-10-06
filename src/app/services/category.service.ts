@@ -39,6 +39,7 @@ export class CategoryService {
     );
   }
 
+  // Crea una nueva categoría y la almacena en el almacenamiento
   create(
     name: string,
     createdBy: string,
@@ -75,6 +76,7 @@ export class CategoryService {
     return newCategory;
   }
 
+  // Actualiza una categoría existente con los cambios proporcionados
   update(
     categoryId: string,
     updatedBy: string,
@@ -142,7 +144,7 @@ export class CategoryService {
     return updatedCategory;
   }
 
- 
+  // Activa una categoría estableciendo su propiedad isActive en true
   activate(
     categoryId: string,
     updatedBy: string
@@ -156,4 +158,18 @@ export class CategoryService {
       }
     );
   }
+
+  // Desactiva una categoría estableciendo su propiedad isActive en false
+  deactivate(
+  categoryId: string,
+  updatedBy: string
+): Category {
+  return this.update(
+    categoryId,
+    updatedBy,
+    {
+      isActive: false
+    }
+  );
+}
 }

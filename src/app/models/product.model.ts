@@ -6,6 +6,8 @@ export interface Product {
 
   categoryId?: string;
 
+  imageUrl?: string;
+
   price: number;
   cost: number;
 

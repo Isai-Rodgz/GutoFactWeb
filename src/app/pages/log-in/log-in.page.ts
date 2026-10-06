@@ -1,16 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
-import { IonicModule } from '@ionic/angular';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
-import { CustomInputComponent } from 'src/app/sharet/component/custom-input/custom-input.component';
 import { ToastService } from 'src/app/services/toast.service';
 
 @Component({
   selector: 'app-log-in',
   templateUrl: './log-in.page.html',
   styleUrls: ['./log-in.page.scss'],
-  imports: [IonicModule,RouterLink, CustomInputComponent, ReactiveFormsModule]
+  standalone: false,
 })
 export class LogInPage implements OnInit{
 

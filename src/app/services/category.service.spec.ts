@@ -306,6 +306,36 @@ describe('CategoryService', () => {
         ).toBe(1);
     });
 
+
+    it('debería desactivar una categoría activa', () => {
+
+        const category =
+        service.create(
+            'Bebidas',
+            userId
+        );
+
+        const deactivated =
+        service.deactivate(
+            category.id,
+            otherUserId
+        );
+
+        expect(deactivated.isActive)
+        .toBeFalse();
+
+        expect(deactivated.updatedBy)
+        .toBe(otherUserId);
+
+        expect(deactivated.updatedAt)
+        .toBeTruthy();
+
+        expect(
+            service.getActive()
+        ).toEqual([]);
+
+    });
+
     it('no debería permitir crear una categoría sin nombre', () => {
 
         expect(() =>

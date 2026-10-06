@@ -1,0 +1,327 @@
+<!-- Category Management Page -->
+<ion-header>
+
+  <ion-toolbar>
+
+    <ion-title>
+      Categorías
+    </ion-title>
+
+    <ion-buttons slot="end">
+
+      <ion-button
+        (click)="goToWorkDesk()">
+
+        <ion-icon
+          slot="icon-only"
+          name="arrow-back-outline">
+        </ion-icon>
+
+      </ion-button>
+
+    </ion-buttons>
+
+  </ion-toolbar>
+
+</ion-header>
+
+
+<ion-content>
+
+  <!-- ENCABEZADO -->
+
+  <div class="page-header">
+
+    <div>
+
+      <h1>
+        Categorías
+      </h1>
+
+      <p>
+        Administra las categorías de tus productos.
+      </p>
+
+    </div>
+
+    <!-- Botón para crear una nueva categoría -->
+
+    <ion-button
+      class="new-category-button"
+      (click)="openForm()">
+
+      <ion-icon
+        slot="start"
+        name="add-outline">
+      </ion-icon>
+
+      Nueva categoría
+
+    </ion-button>
+
+  </div>
+
+
+  <!-- LISTA DE CATEGORÍAS -->
+
+  <div
+    class="categories-container"
+    *ngIf="categories.length > 0">
+
+    <div
+      class="category-card"
+      *ngFor="let category of categories">
+
+      <!-- ICONO -->
+
+      <div class="category-icon">
+
+        <ion-icon
+          name="pricetag-outline">
+        </ion-icon>
+
+      </div>
+
+
+      <!-- INFORMACIÓN -->
+
+      <div class="category-info">
+
+        <h2>
+          {{ category.name }}
+        </h2>
+
+        <p
+          *ngIf="category.description">
+
+          {{ category.description }}
+
+        </p>
+
+        <span
+          class="category-status"
+          [class.inactive]="!category.isActive">
+
+          {{ category.isActive ? 'Activa' : 'Inactiva' }}
+
+        </span>
+
+      </div>
+
+
+      <!-- ACCIONES -->
+
+      <div class="category-actions">
+
+        <!-- Editar categoría -->
+
+        <ion-button
+          fill="clear"
+          (click)="editCategory(category)">
+
+          <ion-icon
+            slot="icon-only"
+            name="create-outline">
+          </ion-icon>
+
+        </ion-button>
+
+
+        <!-- Activar / desactivar categoría -->
+
+        <ion-button
+          fill="clear"
+          (click)="toggleCategoryStatus(category)">
+
+          <ion-icon
+            slot="icon-only"
+            [name]="
+              category.isActive
+                ? 'eye-off-outline'
+                : 'eye-outline'
+            ">
+          </ion-icon>
+
+        </ion-button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ESTADO VACÍO -->
+
+  <div
+    class="empty-state"
+    *ngIf="categories.length === 0">
+
+    <ion-icon
+      name="pricetags-outline">
+    </ion-icon>
+
+    <h2>
+      No hay categorías
+    </h2>
+
+    <p>
+      Crea una categoría para comenzar a organizar
+      tus productos.
+    </p>
+
+    <!-- Botón para crear una categoría -->
+
+    <ion-button
+      class="new-category-button"
+      (click)="openForm()">
+
+      <ion-icon
+        slot="start"
+        name="add-outline">
+      </ion-icon>
+
+      Crear categoría
+
+    </ion-button>
+
+  </div>
+
+
+  <!-- FORMULARIO CREAR / EDITAR -->
+
+  <ion-modal
+    [isOpen]="showForm"
+    (didDismiss)="closeForm()">
+
+    <ng-template>
+
+      <ion-header>
+
+        <ion-toolbar>
+
+          <ion-title>
+
+            {{
+              editingCategoryId
+                ? 'Editar categoría'
+                : 'Nueva categoría'
+            }}
+
+          </ion-title>
+
+          <ion-buttons slot="end">
+
+            <ion-button
+              (click)="closeForm()">
+
+              Cerrar
+
+            </ion-button>
+
+          </ion-buttons>
+
+        </ion-toolbar>
+
+      </ion-header>
+
+
+      <ion-content>
+
+        <div class="category-form">
+
+          <h2>
+
+            {{
+              editingCategoryId
+                ? 'Editar categoría'
+                : 'Crear categoría'
+            }}
+
+          </h2>
+
+          <p>
+
+            {{
+              editingCategoryId
+                ? 'Modifica la información de la categoría.'
+                : 'Define una categoría para organizar tus productos.'
+            }}
+
+          </p>
+
+
+          <!-- Nombre -->
+
+          <ion-item>
+
+            <ion-input
+              label="Nombre"
+              labelPlacement="floating"
+              [(ngModel)]="categoryName">
+            </ion-input>
+
+          </ion-item>
+
+
+          <!-- Descripción -->
+
+          <ion-item>
+
+            <ion-textarea
+              label="Descripción"
+              labelPlacement="floating"
+              [autoGrow]="true"
+              [(ngModel)]="categoryDescription">
+            </ion-textarea>
+
+          </ion-item>
+
+
+          <!-- Error -->
+
+          <p
+            class="category-error"
+            *ngIf="categoryError">
+
+            {{ categoryError }}
+
+          </p>
+
+
+          <!-- Guardar -->
+
+          <ion-button
+            expand="block"
+            class="save-category-button"
+            (click)="saveCategory()">
+
+            {{
+              editingCategoryId
+                ? 'Guardar cambios'
+                : 'Crear categoría'
+            }}
+
+          </ion-button>
+
+
+          <!-- Cancelar -->
+
+          <ion-button
+            expand="block"
+            fill="clear"
+            (click)="closeForm()">
+
+            Cancelar
+
+          </ion-button>
+
+        </div>
+
+      </ion-content>
+
+    </ng-template>
+
+  </ion-modal>
+
+</ion-content>

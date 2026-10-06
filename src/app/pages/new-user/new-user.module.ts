@@ -9,6 +9,8 @@ import { NewUserPageRoutingModule } from './new-user-routing.module';
 import { NewUserPage } from './new-user.page';
 import { SharetModule } from 'src/app/sharet/sharet.module';
 import { RouterModule } from '@angular/router';
+import { CustomInputComponent } from 'src/app/sharet/component/custom-input/custom-input.component';
+import { RouterLink } from '@angular/router';
 
 @NgModule({
   imports: [
@@ -16,11 +18,12 @@ import { RouterModule } from '@angular/router';
     FormsModule,
     IonicModule,
     NewUserPageRoutingModule,
-    NewUserPage,
     SharetModule,
     RouterModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    RouterLink,
+    CustomInputComponent
   ],
-  declarations: []
+  declarations: [NewUserPage]
 })
 export class NewUserPageModule {}

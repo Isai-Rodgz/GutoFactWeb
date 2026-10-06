@@ -302,6 +302,113 @@ describe('CheckoutService', () => {
     );
   });
 
+  it('debe rechazar un pago por transferencia sin referencia', () => {
+    const product = productService.create(
+      'Producto transferencia',
+      250,
+      100,
+      5,
+      'user-1',
+      undefined,
+      undefined,
+      undefined
+    );
+
+    const ticket = ticketService.create('shift-1', 'user-1');
+
+    ticketItemService.add(
+      ticket.id,
+      product.id,
+      1
+    );
+
+    inventoryReservationService.reserve(
+      product.id,
+      ticket.id,
+      ticket.id,
+      1
+    );
+
+    expect(() =>
+      service.checkout(
+        ticket.id,
+        'transfer'
+      )
+    ).toThrowError(
+      'Se requiere una referencia para la transferencia.'
+    );
+
+    const updatedTicket = ticketService.getById(ticket.id);
+
+    expect(updatedTicket?.status).toBe('open');
+
+    const reservation =
+      inventoryReservationService.getByTicketItemId(ticket.id);
+
+    expect(reservation).not.toBeNull();
+
+    const updatedProduct =
+      productService.getById(product.id);
+
+    expect(updatedProduct?.stock).toBe(5);
+
+    expect(saleService.getAll().length).toBe(0);
+
+    expect(inventoryService.getAll().length).toBe(0);
+
+    expect(cashMovementService.getAll().length).toBe(0);
+  });
+
+
+  it('debe procesar correctamente un pago por transferencia con referencia', () => {
+    const product = productService.create(
+      'Producto transferencia',
+      300,
+      100,
+      5,
+      'user-1',
+      undefined,
+      undefined,
+      undefined
+    );
+
+    const ticket = ticketService.create('shift-1', 'user-1');
+
+    ticketItemService.add(
+      ticket.id,
+      product.id,
+      2
+    );
+
+    const reservation =
+      inventoryReservationService.getByTicketId(ticket.id);
+
+    expect(reservation.length).toBe(1);
+    expect(reservation[0].quantity).toBe(2);
+
+    const sale = service.checkout(
+      ticket.id,
+      'transfer',
+      'TRANSFER-12345'
+    );
+
+    expect(sale.total).toBe(600);
+    expect(sale.paymentMethod).toBe('transfer');
+    expect(sale.paymentReference).toBe('TRANSFER-12345');
+    expect(sale.status).toBe('completed');
+
+    const updatedTicket = ticketService.getById(ticket.id);
+
+    expect(updatedTicket?.status).toBe('paid');
+
+    const updatedProduct =
+      productService.getById(product.id);
+
+    expect(updatedProduct?.stock).toBe(3);
+
+    expect(cashMovementService.getAll().length).toBe(0);
+  });
+
   it('should reject card checkout without a payment reference', () => {
 
     const product =
@@ -352,6 +459,158 @@ describe('CheckoutService', () => {
 
     expect(updatedProduct?.stock)
       .toBe(10);
+  });
+
+
+  it('should reject transfer checkout without a payment reference', () => {
+
+    const product =
+      productService.create(
+        'Producto transferencia',
+        250,
+        100,
+        10,
+        userId
+      );
+
+    const ticket =
+      ticketService.create(
+        shiftId,
+        userId
+      );
+
+    ticketItemService.add(
+      ticket.id,
+      product.id,
+      1
+    );
+
+    expect(() =>
+      service.checkout(
+        ticket.id,
+        'transfer'
+      )
+    ).toThrowError(
+      'Se requiere una referencia para la transferencia.'
+    );
+
+    const updatedTicket =
+      ticketService.getById(ticket.id);
+
+    expect(updatedTicket?.status)
+      .toBe('open');
+
+    const reservations =
+      inventoryReservationService
+        .getByTicketId(ticket.id);
+
+    expect(reservations.length)
+      .toBe(1);
+
+    const updatedProduct =
+      productService.getById(product.id);
+
+    expect(updatedProduct?.stock)
+      .toBe(10);
+
+    const sales =
+      saleService.getByTicketId(ticket.id);
+
+    expect(sales.length)
+      .toBe(0);
+
+    const inventoryMovements =
+      inventoryService
+        .getByProductId(product.id);
+
+    expect(inventoryMovements.length)
+      .toBe(0);
+
+    const cashMovements =
+      cashMovementService
+        .getByShiftId(shiftId);
+
+    expect(cashMovements.length)
+      .toBe(0);
+  });
+
+
+  it('should complete a transfer checkout with a payment reference', () => {
+
+    const product =
+      productService.create(
+        'Producto transferencia',
+        300,
+        120,
+        10,
+        userId
+      );
+
+    const ticket =
+      ticketService.create(
+        shiftId,
+        userId
+      );
+
+    ticketItemService.add(
+      ticket.id,
+      product.id,
+      2
+    );
+
+    const sale =
+      service.checkout(
+        ticket.id,
+        'transfer',
+        'TRANSFER-12345'
+      );
+
+    expect(sale.paymentMethod)
+      .toBe('transfer');
+
+    expect(sale.paymentReference)
+      .toBe('TRANSFER-12345');
+
+    expect(sale.total)
+      .toBe(600);
+
+    expect(sale.status)
+      .toBe('completed');
+
+    const updatedTicket =
+      ticketService.getById(ticket.id);
+
+    expect(updatedTicket?.status)
+      .toBe('paid');
+
+    const updatedProduct =
+      productService.getById(product.id);
+
+    expect(updatedProduct?.stock)
+      .toBe(8);
+
+    const inventoryMovements =
+      inventoryService
+        .getByProductId(product.id);
+
+    expect(inventoryMovements.length)
+      .toBe(1);
+
+    expect(inventoryMovements[0].type)
+      .toBe('sale');
+
+    expect(inventoryMovements[0].direction)
+      .toBe('out');
+
+    expect(inventoryMovements[0].quantity)
+      .toBe(2);
+
+    const cashMovements =
+      cashMovementService
+        .getByShiftId(shiftId);
+
+    expect(cashMovements.length)
+      .toBe(0);
   });
 
 

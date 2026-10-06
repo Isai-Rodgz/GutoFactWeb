@@ -10,8 +10,10 @@ describe('ResetPassPage', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
-        ResetPassPage,
         IonicModule.forRoot()
+      ],
+      declarations: [
+        ResetPassPage
       ],
       providers: [
         {

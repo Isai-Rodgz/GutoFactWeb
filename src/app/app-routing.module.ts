@@ -28,6 +28,26 @@ const routes: Routes = [
     path: 'work-desk',
     loadChildren: () => import('./pages/work-desk/work-desk.module').then( m => m.WorkDeskPageModule)
   },
+  {
+    path: 'category-management',
+    loadChildren: () => import('./pages/category-management/category-management.module').then( m => m.CategoryManagementPageModule)
+  },
+  {
+    path: 'product-management',
+    loadChildren: () => import('./pages/product-management/product-management.module').then( m => m.ProductManagementPageModule)
+  },
+  {
+    path: 'inventory-management',
+    loadChildren: () => import('./pages/inventory-management/inventory-management.module').then( m => m.InventoryManagementPageModule)
+  },
+  {
+    path: 'cash-management',
+    loadChildren: () => import('./pages/cash-management/cash-management.module').then( m => m.CashManagementPageModule)
+  },
+  {
+    path: 'shift-history',
+    loadChildren: () => import('./pages/shift-history/shift-history.module').then( m => m.ShiftHistoryPageModule)
+  },
 
 
 ];

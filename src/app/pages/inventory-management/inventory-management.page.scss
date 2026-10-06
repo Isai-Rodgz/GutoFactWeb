@@ -1,0 +1,637 @@
+ion-content {
+  --background: var(--ion-color-primario1);
+}
+
+
+/* =========================
+   ENCABEZADO
+   ========================= */
+
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 20px;
+
+  padding: 24px 18px;
+
+  background: var(--ion-color-primario2);
+
+  border-bottom: 1px solid
+    var(--ion-color-secundario3);
+
+  box-sizing: border-box;
+}
+
+.page-header h1 {
+  margin: 0 0 5px;
+
+  color: var(--ion-color-secundario-main);
+
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.page-header p {
+  margin: 0;
+
+  color: var(--ion-color-secundario4);
+
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+
+/* =========================
+   BOTÓN MOVIMIENTO
+   ========================= */
+
+.movement-button {
+  --background: var(--ion-color-primario-main);
+  --background-activated: var(--ion-color-primario6);
+  --color: var(--ion-color-primario-main-contrast);
+
+  --border-radius: 8px;
+
+  min-height: 43px;
+
+  margin: 0;
+
+  font-size: 15px;
+
+  text-transform: none;
+
+  flex-shrink: 0;
+}
+
+
+/* =========================
+   LISTA DE INVENTARIO
+   ========================= */
+
+.inventory-container {
+  display: grid;
+
+  grid-template-columns:
+    repeat(auto-fill, minmax(230px, 1fr));
+
+  gap: 16px;
+
+  padding: 20px 18px 30px;
+
+  box-sizing: border-box;
+}
+
+
+/* =========================
+   TARJETA DE INVENTARIO
+   ========================= */
+
+.inventory-card {
+  display: flex;
+  flex-direction: column;
+
+  overflow: hidden;
+
+  padding: 15px;
+
+  background: var(--ion-color-primario2);
+
+  border: 1px solid
+    var(--ion-color-primario3);
+
+  border-radius: 10px;
+
+  color: var(--ion-color-secundario-main);
+}
+
+
+/* =========================
+   INFORMACIÓN
+   ========================= */
+
+.inventory-info {
+  display: flex;
+  flex-direction: column;
+
+  gap: 6px;
+
+  min-width: 0;
+}
+
+.inventory-info h2 {
+  margin: 0;
+
+  color: var(--ion-color-secundario-main);
+
+  font-size: 17px;
+  font-weight: 600;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+}
+
+.inventory-info p {
+  margin: 0;
+
+  color: var(--ion-color-secundario4);
+
+  font-size: 13px;
+
+  line-height: 1.4;
+}
+
+
+/* =========================
+   ESTADO DEL PRODUCTO
+   ========================= */
+
+.product-status {
+  align-self: flex-start;
+
+  padding: 4px 8px;
+
+  border-radius: 6px;
+
+  background: var(--ion-color-primario5);
+
+  color: var(--ion-color-primario-main);
+
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.product-status.inactive {
+  color: var(--ion-color-secundario4);
+}
+
+
+/* =========================
+   STOCK
+   ========================= */
+
+.inventory-stock {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 10px;
+
+  margin-top: 15px;
+  padding-top: 12px;
+
+  border-top: 1px solid
+    var(--ion-color-primario3);
+}
+
+.stock-label {
+  color: var(--ion-color-secundario4);
+
+  font-size: 13px;
+}
+
+.inventory-stock strong {
+  color: var(--ion-color-primario-main);
+
+  font-size: 20px;
+  font-weight: 600;
+}
+
+
+/* =========================
+   ACCIONES
+   ========================= */
+
+.inventory-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  gap: 4px;
+
+  margin-top: 10px;
+  padding-top: 10px;
+
+  border-top: 1px solid
+    var(--ion-color-primario3);
+}
+
+.inventory-actions ion-button {
+  --color: var(--ion-color-primario-main);
+
+  --padding-start: 8px;
+  --padding-end: 8px;
+
+  margin: 0;
+
+  font-size: 13px;
+
+  text-transform: none;
+}
+
+
+/* =========================
+   ESTADO VACÍO
+   ========================= */
+
+.empty-state {
+  min-height: 300px;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+
+  padding: 40px 20px;
+
+  box-sizing: border-box;
+}
+
+.empty-state > ion-icon {
+  font-size: 68px;
+
+  margin-bottom: 18px;
+
+  color: var(--ion-color-primario-main);
+}
+
+.empty-state h2 {
+  margin: 0 0 7px;
+
+  color: var(--ion-color-secundario-main);
+
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.empty-state p {
+  max-width: 320px;
+
+  margin: 0 0 22px;
+
+  color: var(--ion-color-secundario4);
+
+  font-size: 14px;
+
+  line-height: 1.4;
+}
+
+
+/* =========================
+   MODALES
+   ========================= */
+
+/*
+ * No usamos ion-modal directamente.
+ * Cada modal tiene su propia clase para
+ * evitar que uno afecte al otro.
+ */
+
+.inventory-movement-modal {
+  --width: 520px;
+  --max-width: 95%;
+  --height: 85%;
+  --max-height: 90%;
+  --border-radius: 10px;
+}
+
+.inventory-history-modal {
+  --width: 560px;
+  --max-width: 95%;
+
+  --height: 80%;
+  --max-height: 90%;
+
+  --border-radius: 10px;
+}
+
+
+/* =========================
+   FORMULARIO DE MOVIMIENTO
+   ========================= */
+
+.movement-form {
+  padding: 24px 20px 30px;
+
+  box-sizing: border-box;
+}
+
+.movement-form h2 {
+  margin: 0 0 7px;
+
+  color: var(--ion-color-secundario-main);
+
+  font-size: 21px;
+  font-weight: 600;
+}
+
+.movement-form > p {
+  margin: 0 0 20px;
+
+  color: var(--ion-color-secundario4);
+
+  font-size: 14px;
+
+  line-height: 1.5;
+}
+
+.movement-form ion-item {
+  --background: var(--ion-color-primario2);
+  --color: var(--ion-color-secundario-main);
+
+  --border-color: var(--ion-color-primario3);
+
+  --highlight-color-focused:
+    var(--ion-color-primario-main);
+
+  margin-bottom: 12px;
+
+  border-radius: 8px;
+
+  overflow: hidden;
+}
+
+.movement-error {
+  margin: 8px 2px 16px;
+
+  color: var(--ion-color-danger);
+
+  font-size: 14px;
+}
+
+.movement-actions {
+  display: flex;
+  flex-direction: column;
+
+  gap: 8px;
+
+  margin-top: 20px;
+}
+
+.movement-actions ion-button:first-child {
+  --background:
+    var(--ion-color-primario-main);
+
+  --background-activated:
+    var(--ion-color-primario6);
+
+  --color:
+    var(--ion-color-primario-main-contrast);
+
+  --border-radius: 8px;
+
+  height: 44px;
+
+  text-transform: none;
+}
+
+.movement-actions ion-button:last-child {
+  --color:
+    var(--ion-color-primario-main);
+
+  --border-color:
+    var(--ion-color-primario-main);
+
+  --border-radius: 8px;
+
+  height: 44px;
+
+  text-transform: none;
+}
+
+
+/* =========================
+   ENCABEZADO DEL HISTORIAL
+   ========================= */
+
+.movement-history-header {
+  padding: 24px 20px 18px;
+
+  background: var(--ion-color-primario2);
+
+  border-bottom: 1px solid
+    var(--ion-color-primario3);
+}
+
+.movement-history-header h2 {
+  margin: 0 0 7px;
+
+  color: var(--ion-color-secundario-main);
+
+  font-size: 21px;
+  font-weight: 600;
+}
+
+.movement-history-header p {
+  margin: 0;
+
+  color: var(--ion-color-secundario4);
+
+  font-size: 14px;
+}
+
+.movement-history-header strong {
+  color: var(--ion-color-primario-main);
+}
+
+
+/* =========================
+   LISTA DE MOVIMIENTOS
+   ========================= */
+
+.movement-history {
+  display: flex;
+  flex-direction: column;
+
+  gap: 10px;
+
+  padding: 18px;
+}
+
+
+/* =========================
+   TARJETA DE MOVIMIENTO
+   ========================= */
+
+.movement-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 16px;
+
+  padding: 15px;
+
+  background: var(--ion-color-primario2);
+
+  border: 1px solid
+    var(--ion-color-primario3);
+
+  border-radius: 10px;
+}
+
+.movement-info {
+  min-width: 0;
+}
+
+.movement-info h3 {
+  margin: 0 0 5px;
+
+  color: var(--ion-color-secundario-main);
+
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.movement-info p {
+  margin: 0 0 6px;
+
+  color: var(--ion-color-secundario4);
+
+  font-size: 13px;
+
+  line-height: 1.4;
+}
+
+.movement-info span {
+  color: var(--ion-color-secundario4);
+
+  font-size: 12px;
+}
+
+
+/* =========================
+   CANTIDAD DEL MOVIMIENTO
+   ========================= */
+
+.movement-quantity {
+  display: flex;
+  flex-direction: column;
+
+  align-items: flex-end;
+
+  flex-shrink: 0;
+}
+
+.movement-quantity strong {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.movement-quantity span {
+  margin-top: 2px;
+
+  color: var(--ion-color-secundario4);
+
+  font-size: 12px;
+}
+
+.movement-in {
+  color: var(--ion-color-primario-main);
+}
+
+.movement-out {
+  color: var(--ion-color-danger);
+}
+
+
+/* =========================
+   HISTORIAL VACÍO
+   ========================= */
+
+.empty-history {
+  min-height: 300px;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+
+  padding: 40px 20px;
+}
+
+.empty-history > ion-icon {
+  font-size: 60px;
+
+  margin-bottom: 16px;
+
+  color: var(--ion-color-primario-main);
+}
+
+.empty-history h3 {
+  margin: 0 0 7px;
+
+  color: var(--ion-color-secundario-main);
+
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.empty-history p {
+  max-width: 320px;
+
+  margin: 0;
+
+  color: var(--ion-color-secundario4);
+
+  font-size: 14px;
+
+  line-height: 1.4;
+}
+
+
+/* =========================
+   RESPONSIVE
+   ========================= */
+
+@media (max-width: 700px) {
+
+  .page-header {
+    align-items: flex-start;
+
+    flex-direction: column;
+
+    padding: 20px 16px;
+  }
+
+  .movement-button {
+    width: 100%;
+  }
+
+  .inventory-container {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+
+    gap: 12px;
+
+    padding: 16px;
+  }
+
+  .inventory-card {
+    padding: 12px;
+  }
+
+  .movement-card {
+    align-items: flex-start;
+  }
+
+}
+
+
+@media (max-width: 420px) {
+
+  .inventory-container {
+    grid-template-columns: 1fr;
+  }
+
+}
